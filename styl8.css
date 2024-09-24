@@ -1,0 +1,41 @@
+/* Ustawienia ogólne dla strony */
+body {
+    background-color: #2b536e; /* Subtelny granatowy kolor tła */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Nowoczesna czcionka */
+    margin: 0;
+    padding: 20px; /* Odstępy od krawędzi strony */
+}
+
+/* Styl ogólny dla tabel */
+table {
+    border-collapse: collapse; /* Usuwa podwójne ramki */
+    margin-bottom: 30px; /* Odstępy między tabelami */
+    width: 100%; /* Pełna szerokość tabeli */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Delikatny cień dla głębi */
+}
+
+/* Styl dla nagłówków tabel */
+th {
+    background-color: #eaecee; /* Jasny granatowy kolor tła */
+    color: #333; /* Ciemnoszary kolor tekstu */
+    padding: 10px; /* Odstępy wewnątrz komórek */
+    border: 1px solid #ddd; /* Delikatne obramowanie */
+}
+
+/* Styl dla komórek tabel */
+td {
+    padding: 10px; /* Odstępy wewnątrz komórek */
+    border: 1px solid #ddd; /* Delikatne obramowanie */
+    background-color: #ffffff; /* Biały kolor tła */
+}
+
+/* Styl dla tekstu wewnątrz tabel */
+th, td {
+    text-align: left; /* Wyrównanie tekstu do lewej */
+}
+
+/* Styl dla linków (jeśli są) */
+a {
+    color: #3498db; /* Niebieski kolor tekstu */
+    text-decoration: none; /* Usunięcie podkreślenia */
+}

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logowanie</title>
+  <link rel="stylesheet" href="stylindex.css">
+</head>
+
+<body>
+  <div class="Info">
+    <img src="nowe_g-removebg-preview.png" alt="Godło Okręgu Sądeckiego">
+    <h2>Zespół Szkół PRO imienia Kitkusława I w Starym Sączu</h2>
+    <h4>System Dzienników "KITKE"</h4>
+  </div>
+
+  <center>
+    <div class="Panel">
+      <h3>Zaloguj się</h3>
+      Login <input type="text" class="login"> <br>
+      Hasło:<input type="password" class="haslo"><br>
+      Odział Klasowy:<br> <select class="select">
+        <option value="nic">Klasa</option>
+        <option value="1PRO">1 PRO</option>
+        <option value="1NUP"> 2 PRO</option>
+        <option value="2NUP"> 1 NUP</option>
+        <option value="2">2 NUP</option>
+        <option value="3">1 PLO</option>
+        <option value="adm">Admin</option>
+      </select><br><br>
+
+      <button class="button" onclick="f()"><span>Zaloguj się</span></button>
+    </div>
+  </center>
+
+  <div class="stopka">
+    <h5>Administratorem Systemu jest Psiepauch Krewedkowski
+    </h5>
+    <p><b><i><u>Wersja systemu: KITKE 2.0</u></i></b></p>
+  </div>
+  <script>
+    let login = document.querySelector('.login');
+    let haslo = document.querySelector('.haslo');
+    let select = document.querySelector('.select')
+    function f() {
+      if (login.value == "" || haslo.value == "" || select.value == "nic") {
+        alert("Uzupełnij dane!")
+      }
+      else if (login.value == "kitkisan141" || login.value == "nauczyciel" || login.value == "admin" && haslo.value == "nup231" && select.value == "3") {
+        window.location.href = 'startowa.html';
+        login.value = ""
+        haslo.value = ""
+        select.value = "nic"
+      }
+      else if (select.value == "adm") {
+        let haslo = prompt("Podaj hasło do administracji: ")
+        if (haslo == "xAuch213") {
+          window.location.href = 'startowa.html';
+        }
+        else {
+          alert("Nie jesteś adminem!")
+        }
+      }
+      else {
+        alert("Niepoprawne dane! Popraw dane i spróbuj jeszcze raz")
+      }
+
+    }
+  </script>
+  <a href="wyniki.html">Administratorem strony jest Psiepauch Krewedkowski</a>
+</body>
+
+</html>

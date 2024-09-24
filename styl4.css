@@ -1,0 +1,55 @@
+/* Ustawienia ogólne dla strony */
+body {
+    background-color: #2b536e; /* Jasnogranatowy subtelny kolor tła */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Nowoczesna czcionka */
+    margin: 0;
+    padding: 20px; /* Odstępy od krawędzi strony */
+}
+
+/* Styl ogólny dla wszystkich elementów */
+.ote, .teod, .prad, .egzd, .opr, .oeg, .hiod, .ohi {
+    border-radius: 5px; /* Zaokrąglenie rogów */
+    margin-bottom: 15px; /* Odstępy między elementami */
+    padding: 10px; /* Odstępy wewnątrz elementów */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Delikatny cień dla głębi */
+}
+
+/* Styl dla poszczególnych klas */
+.ote {
+    background-color: #ade8f4; /* Jasnoniebieski kolor tła */
+}
+
+.teod, .prad, .egzd, .ohi {
+    background-color: #ffeadb; /* Blanchedalmond kolor tła */
+}
+
+.opr, .hiod {
+    background-color: #80ced7; /* Aquamarine kolor tła */
+}
+
+.oeg {
+    background-color: #deb887; /* Burlywood kolor tła */
+    font-size: 18px; /* Zwiększenie rozmiaru czcionki */
+}
+
+/* Styl dla tabel (jeśli są) */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px; /* Odstępy między tabelami */
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+    border: 1px solid #ddd; /* Delikatne obramowanie */
+}
+
+th {
+    background-color: #e0e7ff; /* Jasnogranatowy kolor tła dla nagłówków tabeli */
+    color: #333; /* Ciemnoszary kolor tekstu */
+}
+
+td {
+    background-color: #ffffff; /* Biały kolor tła dla komórek tabeli */
+}

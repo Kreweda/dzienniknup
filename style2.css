@@ -1,0 +1,28 @@
+/* Ustawienia ogólne dla strony */
+body {
+    background-color: navy; /* Granatowe tło dla całej strony */
+    color: white; /* Biały tekst na granatowym tle */
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+/* Styl dla tabeli */
+table {
+    background-color: white; /* Białe tło dla tabeli */
+    width: 100%;
+    border-collapse: collapse; /* Usuwa podwójne ramki */
+    color:black;
+}
+
+/* Styl dla komórek tabeli */
+td, th {
+    border: 1px solid navy; /* Granatowe ramki dla komórek */
+    padding: 10px; /* Dodaje wewnętrzny odstęp do komórek */
+    text-align: left; /* Wyrównuje tekst do lewej */
+}
+
+/* Styl dla danych i kontenerów */
+.dan, .dan2, .hie, .jp, .kont, .konp, .konh, .konj {
+    border: 2px solid navy; /* Granatowe ramki dla elementów */
+    margin-bottom: 10px; /* Dodaje odstęp między elementami */
+    padding: 5px; /* Dodaje wewnętrzny odstęp do elementów */
+}

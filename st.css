@@ -1,0 +1,125 @@
+body {
+    color: #333; /* Darker text for better readability */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font-family */
+    background-color: #f0f0f0; /* Lighter background for a fresher look */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+}
+
+.baner {
+    background-color: #005792; /* More vibrant blue */
+    text-align: center;
+    padding: 25px 0; /* Adjust padding instead of fixed height */
+    font-size: 24px; /* Larger font size for better visibility */
+    color: #fff; /* Ensure text is white for contrast */
+}
+
+.baner a {
+    display: inline-block; /* Align links next to each other */
+    margin: 0 10px; /* Add space between links */
+    padding: 10px 20px; /* Add padding for a button-like appearance */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Subtle rounded corners */
+    background-color: #007acc; /* Matching background for links */
+    color: #fff; /* White text for links */
+    text-decoration: none; /* Remove underline from links */
+    transition: background-color 0.3s; /* Smooth background color transition */
+}
+
+.baner a:hover {
+    background-color: #0066cc; /* Darken link background on hover */
+}
+
+.lewy, .prawy {
+    background-color: #007acc; /* Matching sidebars color */
+    width: 200px; /* Uniform width for sidebars */
+    padding: 20px; /* Padding for inner spacing */
+    box-sizing: border-box; /* Include padding in width calculation 
+    */
+    height:auto
+}
+
+.lewy img, .prawy img {
+    width: 100%; /* Responsive image width */
+    height: auto; /* Maintain aspect ratio */
+    border: none; /* Remove border */
+    border-radius: 10px; /* Rounded corners for images */
+    margin-bottom: 20px; /* Space below images */
+}
+
+.srodek {
+    text-align: left; /* Align text to the left */
+    background-color: #f0f0f0; /* Light background for the content area */
+    padding: 20px; /* Padding for inner spacing */
+    box-sizing: border-box; /* Include padding in width calculation */
+    margin: 0 auto; /* Center the content area */
+    max-width: 1200px; /* Max width for the content area */
+}
+
+.srodek h2, .srodek h3, .srodek h4 {
+    color: #005792; /* Title color to match the theme */
+    margin-bottom: 10px; /* Space below titles */
+}
+
+.srodek p, .srodek ol {
+    background-color: #fff; /* White background for readability */
+    padding: 15px; /* Padding inside paragraphs and lists */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    margin-bottom: 20px; /* Space below paragraphs and lists */
+}
+
+.stopka {
+    background-color: #005792; /* Footer background to match the theme */
+    color: #fff; /* White text for contrast */
+    text-align: center; /* Center the footer content */
+    padding: 10px 0; /* Padding for spacing */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Consistent font-family */
+}
+
+/* Additional styles for hover effects on images */
+img:hover {
+    border: 3px solid red; /* Red border on hover */
+}
+
+/* Clearfix for floated elements */
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Responsive design adjustments */
+@media (max-width: 768px) {
+    .lewy, .prawy {
+        width: 100%; /* Full width for mobile */
+        float: none; /* Disable floating on mobile */
+    }
+
+    .srodek {
+        max-width: none; /* Allow content area to fill the width on mobile */
+    }
+}
+.lewy{
+    float: left;
+}
+.prawy{
+    float:right
+}
+.prawy a{
+    display: inline-block; /* Align links next to each other */
+    margin: 0 10px; /* Add space between links */
+    padding: 10px 20px; /* Add padding for a button-like appearance */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Subtle rounded corners */
+    background-color: #007acc; /* Matching background for links */
+    color: #fff; /* White text for links */
+    text-decoration: none; /* Remove underline from links */
+    transition: background-color 0.3s; /* Smooth background color transition*/
+}
+.prawy a:hover{
+     background-color: #193652;
+}
+.srodek li{
+    left: 20px;
+}

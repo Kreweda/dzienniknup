@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Logowania do Systemu Egzaminacyjnego 2024</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #eaeaea;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 350px;
+            text-align: center;
+        }
+
+        .login-header {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .login-button {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .login-button:hover {
+            background-color: #0056b3;
+        }
+
+        a {
+            color: #ffffff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            Panel Logowania do Systemu Egzaminacyjnego 2024
+        </div>
+        <form>
+            <div class="input-group">
+                <label for="username">Nazwa użytkownika:</label>
+                <input type="text" id="username" placeholder="Wprowadź nazwę użytkownika">
+            </div>
+            <div class="input-group">
+                <label for="password">Hasło:</label>
+                <input type="password" id="password" placeholder="Wprowadź hasło">
+            </div>
+            <button type="submit" class="login-button"><a href="wyniki.html">Zaloguj się</a></button>
+        </form>
+    </div>
+</body>
+<!-- <script>
+    let login = document.querySelector('.login-button');
+    let haslo = document.querySelector('.password');
+
+    function f() {
+        if (login.value == "" || haslo.value == "") {
+            alert("Uzupełnij dane!")
+        }
+        else if (login.value == "kitkisan141" || login.value == "nauczyciel" || login.value == "admin" && haslo.value == "nup231") {
+            window.location.href = 'wyniki.html';
+            login.value = ""
+            haslo.value = ""
+            select.value = "nic"
+        }
+        else if (login.value == "admin") {
+            let haslo = prompt("Podaj hasło do administracji: ")
+            if (haslo == "xAuch213") {
+                window.location.href = 'wyniki.html';
+            }
+            else {
+                alert("Nie jesteś adminem!")
+            }
+        }
+        else {
+            alert("Niepoprawne dane! Popraw dane i spróbuj jeszcze raz")
+        }
+
+    }
+</script>
+ -->
+
+</html>

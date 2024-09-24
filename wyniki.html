@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wyniki egzaminów 2024</title>
+    <style>
+        /* Resetowanie domyślnych stylów */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Styl banera */
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        /* Styl panelu środkowego */
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Styl stopki */
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        /* Styl tabeli */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 0.9em;
+            font-family: sans-serif;
+            min-width: 400px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        }
+
+        th,
+        td {
+            padding: 12px 15px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #009879;
+            color: #ffffff;
+            text-transform: uppercase;
+        }
+
+        tr {
+            border-bottom: 1px solid #dddddd;
+        }
+
+        tr:nth-of-type(even) {
+            background-color: #f3f3f3;
+        }
+
+        tr:last-of-type {
+            border-bottom: 2px solid #009879;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+            cursor: pointer;
+        }
+
+        /* Zaokrąglone rogi dla pierwszego i ostatniego nagłówka */
+        th:first-child {
+            border-radius: 10px 0 0 0;
+        }
+
+        th:last-child {
+            border-radius: 0 10px 0 0;
+        }
+
+        /* Zaokrąglone rogi dla pierwszej i ostatniej komórki każdego rzędu */
+        td:first-child {
+            border-radius: 0 0 0 10px;
+        }
+
+        td:last-child {
+            border-radius: 0 0 10px 0;
+        }
+
+        /* Styl responsywny */
+        @media screen and (max-width: 768px) {
+
+            /* Dla ekranów o szerokości do 768 pikseli */
+            body {
+                font-size: 16px;
+                /* Przykładowy rozmiar czcionki dla małych ekranów */
+            }
+
+            /* Dodaj inne reguły CSS dostosowane do małych ekranów */
+        }
+
+        @media screen and (min-width: 769px) {
+
+            /* Dla ekranów o szerokości większej niż 768 pikseli */
+            body {
+                font-size: 18px;
+                /* Przykładowy rozmiar czcionki dla większych ekranów */
+            }
+
+            /* Dodaj inne reguły CSS dostosowane do większych ekranów */
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Wyniki Egzaminów 2024</h1>
+
+
+
+    </header>
+
+    <div class="content">
+        <h2>Centralna Komisja Koteuowska</h2>
+        <p>Tutaj znajdziesz wyniki egzaminów.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Egzamin</th>
+                    <th>Data</th>
+                    <th>Liczba punktów</th>
+                    <th>Liczba procent</th>
+                    <th>Wynik</th>
+                    <th>Egzaminator</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Teoretyczny</td>
+                    <td>04.06.2024</td>
+                    <td>44 / 79</td>
+                    <td>55,6%</td>
+                    <td>Zdano</td>
+                    <td>Psiepauch Krewedkowski</td>
+                </tr>
+                <tr>
+                    <td>Ustny</td>
+                    <td>04.06.2024</td>
+                    <td>4 / 5</td>
+                    <td>80%</td>
+                    <td>Zdano</td>
+                    <td>Psiepauch Krewedkowski</td>
+                </tr>
+                <tr>
+                    <td>Praktyczny</td>
+                    <td>05.06.2024</td>
+                    <td>17 / 23</td>
+                    <td>73,9%</td>
+                    <td>Zdano</td>
+                    <td>Psiepauch Krewedkowski</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        © 2024 Psiepauch Krewedkowski
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.querySelector('.menu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+</body>
+
+</html>

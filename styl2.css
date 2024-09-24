@@ -1,0 +1,53 @@
+/* Ustawienia ogólne dla strony */
+body {
+    background-color: #2b536e; /* Subtelny granatowy kolor tła */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Nowoczesna czcionka */
+    margin: 0;
+    padding: 0;
+}
+
+/* Styl dla tabel */
+table {
+    background-color: #ffffff; /* Biały kolor tła dla tabeli */
+    border-collapse: separate; /* Oddziela tabele */
+    border-spacing: 10px; /* Odstępy między tabelami */
+    width: 100%; /* Pełna szerokość tabeli */
+    margin-bottom: 20px; /* Odstęp od dolnego elementu */
+}
+
+/* Styl dla komórek tabeli */
+td, th {
+    border: 1px solid #34495e; /* Granatowe obramowanie */
+    padding: 8px; /* Odstępy wewnątrz komórek */
+    text-align: left; /* Wyrównanie tekstu do lewej */
+}
+
+/* Styl dla klas .rodzaj1, .rodzaj2, .koniec */
+.rodzaj1, .rodzaj2, .koniec {
+    background-color: #ecf0f1; /* Jasny kolor tła */
+    font-size: 16px; /* Większy rozmiar czcionki */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Nowoczesna czcionka */
+}
+
+/* Styl dla klas .pozytywne, .negatywne, .proponuje, .zachowaniekon */
+.pozytywne {
+    background-color: #2ecc71; /* Zielony kolor tła */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Nowoczesna czcionka */
+}
+
+.negatywne {
+  /*  background-color: #e74c3c; /* Czerwony kolor tła */
+    color: #000000; /* Jasny kolor tekstu */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Nowoczesna czcionka */
+}
+
+.proponuje {
+    background-color: #3498db; /* Niebieski kolor tła */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Nowoczesna czcionka */
+}
+
+.zachowaniekon {
+    background-color: #f39c12; /* Pomarańczowy kolor tła */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Nowoczesna czcionka */
+    font-size: 18px; /* Większy rozmiar czcionki */
+}
