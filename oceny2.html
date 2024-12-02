@@ -348,6 +348,14 @@
     <h2>Ocena końcowa:<b><u><i></i></u></b></h2>
     <h2>Średnia:</h2>
   </div>
+    <script>
+  document.getElementById('redirect-select').addEventListener('change', function() {
+    const selectedValue = this.value; // Pobierz wartość wybranej opcji
+    if (selectedValue) { // Sprawdź, czy wartość nie jest pusta
+        window.location.href = selectedValue; // Przekieruj na wybraną stronę
+    }
+});
+</script>
 </body>
 
 </html>
