@@ -9,10 +9,12 @@
 
 <body bgcolor="#785342">
   <div class="kont" height="50px">
-  <select>
-    <option value="oceny2.html"> <a href="">Oceny - 1 semestr</a></option>
-       <option value="oceny2.html"> <a href="">Oceny - 2 semestr</a></option>
-  </select>
+  <select id="redirect-select">
+    <option value="" disabled selected>Wybierz stronę</option>
+    <option value="oceny2.html">Oceny 1 semestr</option>
+    <option value="oceny3.html">Oceny 2 semestr</option>
+   
+</select>
   </div>
   <div class="dan">
     <h2>Oceny, teoria</h2><br>
@@ -106,6 +108,14 @@
     <h2>Ocena końcowa:<b><u><i></i></u></b></h2>
     <h2>Średnia:</h2>
   </div>
+  <script>
+  document.getElementById('redirect-select').addEventListener('change', function() {
+    const selectedValue = this.value; // Pobierz wartość wybranej opcji
+    if (selectedValue) { // Sprawdź, czy wartość nie jest pusta
+        window.location.href = selectedValue; // Przekieruj na wybraną stronę
+    }
+});
+</script>
 </body>
 
 </html>
