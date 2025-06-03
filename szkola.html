@@ -17,6 +17,9 @@
     <h5>Oddziały Klasowe:</h5>
     <rb></rb>
     <a href="#">1 PRO </a> <a href="#"> 1 NUP </a><a href="#"> 1PLO</a>
+    <h1>Do wakacji zostało:</h1>
+<div id="countdown" style="font-size: 24px; font-weight: bold; color: darkred;"></div>
+
   </div>
   <div class="lewy">
     <H3>Warto odwiedzić:</H3>
@@ -303,6 +306,33 @@ prof.P.Krewedkowski</p>
         <p class="cnt"><b>adres e-mail: </b> szkolapro01@gmail.com</p>
 
   </div>
+  <script>
+  // Ustaw datę zakończenia roku szkolnego
+  const wakacje = new Date("June 26, 2025 00:00:00").getTime();
+
+  const countdownElement = document.getElementById("countdown");
+
+  function aktualizujLicznik() {
+    const teraz = new Date().getTime();
+    const roznica = wakacje - teraz;
+
+    if (roznica <= 0) {
+      countdownElement.innerHTML = "Wakacje już są!";
+      return;
+    }
+
+    const dni = Math.floor(roznica / (1000 * 60 * 60 * 24));
+    const godziny = Math.floor((roznica % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minuty = Math.floor((roznica % (1000 * 60 * 60)) / (1000 * 60));
+    const sekundy = Math.floor((roznica % (1000 * 60)) / 1000);
+
+    countdownElement.innerHTML = `${dni} dni, ${godziny} godz., ${minuty} min, ${sekundy} sek`;
+  }
+
+  aktualizujLicznik();
+  setInterval(aktualizujLicznik, 1000);
+</script>
+
 </body>
 
 </html>
