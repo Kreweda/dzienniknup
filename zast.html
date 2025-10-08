@@ -1,44 +1,263 @@
 <!DOCTYPE html>
-<html lang="pl" dir="ltr">
+<html lang="pl">
 
 <head>
-  <meta charset="utf-8">
-  <title>Zastępstwa</title>
-  <link rel=stylesheet href=styl7.css>
+    <meta charset="UTF-8">
+    <title>Zastępstwa - Dziennik Elektroniczny</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f4f6fa;
+        }
+        
+        header {
+            background: #2d3e50;
+            color: #fff;
+            padding: 20px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .logo {
+            font-size: 1.8em;
+            font-weight: bold;
+            background: #2d3e50;
+            padding: 0 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px #0001;
+            position: relative;
+            z-index: 2;
+        }
+        
+        nav {
+            background: #34495e;
+            width: 220px;
+            min-height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 80px;
+            z-index: 1;
+        }
+        
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        nav ul li {
+            margin: 20px 0;
+        }
+        
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1em;
+            padding: 10px 30px;
+            display: block;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        
+        nav ul li a:hover {
+            background: #22313f;
+        }
+        
+        main {
+            margin-left: 240px;
+            padding: 40px;
+        }
+        
+        .student-panel {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px #0001;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .student-photo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #eee;
+            margin-right: 30px;
+        }
+        
+        .student-info {
+            font-size: 1.1em;
+        }
+        
+        h2 {
+            margin-top: 0;
+        }
+        
+        .section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px #0001;
+            margin-bottom: 30px;
+        }
+        
+        .section h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px #0001;
+            margin-bottom: 20px;
+        }
+        
+        th,
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+        
+        th {
+            background: #f0f3f7;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .actions {
+            margin-top: 20px;
+        }
+        
+        .btn {
+            background: #2d3e50;
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-right: 10px;
+        }
+        
+        .btn:hover {
+            background: #22313f;
+        }
+        
+        @media (max-width: 900px) {
+            nav {
+                width: 100px;
+            }
+            main {
+                margin-left: 120px;
+                padding: 20px;
+            }
+            .student-panel {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .student-photo {
+                margin-bottom: 15px;
+            }
+            .logo {
+                font-size: 1.2em;
+                padding: 0 10px;
+            }
+        }
+    </style>
+    <script>
+        function exportSubstitutionsToPDF() {
+            let pdfContent = 'Zastępstwa\n\n';
+            const table = document.querySelector('.section table');
+            Array.from(table.rows).forEach(row => {
+                let rowText = Array.from(row.cells).map(cell => cell.innerText).join(' | ');
+                pdfContent += rowText + '\n';
+            });
+            pdfContent += '\n';
+
+            const script = document.createElement('script');
+            script.src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
+            script.onload = () => {
+                const {
+                    jsPDF
+                } = window.jspdf;
+                const doc = new jsPDF();
+                doc.setFont("helvetica");
+                doc.setFontSize(12);
+                doc.text(pdfContent, 10, 10);
+                doc.save("zastepstwa.pdf");
+            };
+            document.body.appendChild(script);
+        }
+    </script>
 </head>
 
-<body >
-  <table border="7px">
-    <tr>
-      <th>Zastępstwa</th>
-    </tr>
-    <tr>
-      <th>Zastępstwo za(nauczyciel):</th>
-      <th>Przedmiot na zastępstwie:</th>
-      <th>Nauczyciel:</th>
-      <th>Data:</th>
-      <th>Lekcja nr.</th>
-
-      <th>Materiały</th>
-    </tr>
-    <tr>
-      <th>Krewedkowski Piepauch</th>
-      <td>Podstawy Języków Programowania</td>
-      <td>Bamboleo Bamboleowski</td>
-      <td>9.10.2025</td>
-      <td>1</td>
-      <td></td>
-    </tr>
-    <tr>
-      <th>Krewedkowski Piepauch</th>
-      <td>Wychowanie Fizyczne</td>
-      <td>Bagietta Oddowski</td>
-      <td>9.10.2025</td>
-      <td>2</td>
-      <td>Strój odpowiedni do wykonywania ćwiczeń</td>
-    </tr>
-
-  </table>
+<body>
+    <header>
+        <div class="logo">Zespół Szkół im.Kitkusława w Starym Saczu</div>
+        <div>Witaj, <strong>Kitkisana Lulusiowata</strong></div>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="startowa.html">Strona główna</a></li>
+            
+    </nav>
+    <main>
+        <div class="student-panel">
+            <div class="student-photo"></div>
+            <div class="student-info">
+                <div><strong>Kitkisana Lulusiowata</strong></div>
+                <div>Klasa: 2PLO</div>
+              
+            </div>
+        </div>
+        <h2>Zastępstwa</h2>
+        <div class="section">
+            <h3>Lista zastępstw</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Godzina</th>
+                        <th>Przedmiot</th>
+                        <th>Zastępujący nauczyciel</th>
+                        <th>Uwagi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>08.10.2025</td>
+                        <td>1(16:10-16:35)</td>
+                        <td>Podstawy Języków Programowania</td>
+                        <td>mgr Bamboleo Bamboleowski</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>08.10.2025</td>
+                        <td>2(16:40-17:05)</td>
+                        <td>Wychowanie Fizyczne</td>
+                        <td>mgr Bamboleo Bamboleowski</td>
+                        <td>Proszę zabrać strój odpowiedni do wykonywania ćwiczeń</td>
+                    </tr>
+                 
+                </tbody>
+            </table>
+        </div>
+        <div class="actions">
+            <button class="btn" onclick="exportSubstitutionsToPDF()">Eksportuj do PDF</button>
+        </div>
+    </main>
 </body>
 
 </html>
