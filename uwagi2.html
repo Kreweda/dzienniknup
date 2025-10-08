@@ -2,89 +2,276 @@
 <html lang="pl">
 
 <head>
-  <link rel="stylesheet" href="styl2.css">
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Uwagi i osiągnięcia</title>
+    <meta charset="UTF-8">
+    <title>Uwagi - Dziennik Elektroniczny</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f4f6fa;
+        }
+        
+        header {
+            background: #2d3e50;
+            color: #fff;
+            padding: 20px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .logo {
+            font-size: 1.8em;
+            font-weight: bold;
+            background: #2d3e50;
+            padding: 0 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px #0001;
+            position: relative;
+            z-index: 2;
+        }
+        
+        nav {
+            background: #34495e;
+            width: 220px;
+            min-height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 80px;
+            z-index: 1;
+        }
+        
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        nav ul li {
+            margin: 20px 0;
+        }
+        
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1em;
+            padding: 10px 30px;
+            display: block;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        
+        nav ul li a:hover {
+            background: #22313f;
+        }
+        
+        main {
+            margin-left: 240px;
+            padding: 40px;
+        }
+        
+        .student-panel {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px #0001;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .student-photo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #eee;
+            margin-right: 30px;
+        }
+        
+        .student-info {
+            font-size: 1.1em;
+        }
+        
+        h2 {
+            margin-top: 0;
+        }
+        
+        .section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px #0001;
+            margin-bottom: 30px;
+        }
+        
+        .section h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px #0001;
+            margin-bottom: 20px;
+        }
+        
+        th,
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+        
+        th {
+            background: #f0f3f7;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .positive {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        
+        .negative {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .neutral {
+            color: #34495e;
+            font-weight: bold;
+        }
+        
+        .actions {
+            margin-top: 20px;
+        }
+        
+        .btn {
+            background: #2d3e50;
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-right: 10px;
+        }
+        
+        .btn:hover {
+            background: #22313f;
+        }
+        
+        @media (max-width: 900px) {
+            nav {
+                width: 100px;
+            }
+            main {
+                margin-left: 120px;
+                padding: 20px;
+            }
+            .student-panel {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .student-photo {
+                margin-bottom: 15px;
+            }
+            .logo {
+                font-size: 1.2em;
+                padding: 0 10px;
+            }
+        }
+    </style>
+    <script>
+        function exportRemarksToPDF() {
+            let pdfContent = 'Uwagi ucznia\n\n';
+            const table = document.querySelector('.section table');
+            Array.from(table.rows).forEach(row => {
+                let rowText = Array.from(row.cells).map(cell => cell.innerText).join(' | ');
+                pdfContent += rowText + '\n';
+            });
+            pdfContent += '\n';
+
+            const script = document.createElement('script');
+            script.src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
+            script.onload = () => {
+                const {
+                    jsPDF
+                } = window.jspdf;
+                const doc = new jsPDF();
+                doc.setFont("helvetica");
+                doc.setFontSize(12);
+                doc.text(pdfContent, 10, 10);
+                doc.save("uwagi.pdf");
+            };
+            document.body.appendChild(script);
+        }
+    </script>
 </head>
 
 <body>
-  <div class="rodzaj1">
-    <h3>Uwagi Pozytywne:</h3>
-  </div>
-  <div class="pozytywne">
-    <center>
-      <table border="6px">
-        <tr>
-          <th>Punkty</th>
-          <th>Treść</th>
-          <th>Nauczyciel</th>
-          <th>Data</th>
-        </tr>
- <tr>
-   <th>+5</th>
-   <td>Zachowanie za miesiąc IX</td>
-   <td>Koteu Koteuowski</td>
-   <td>08.10.2025</td>
- </tr>
-      </table>
-    </center>
-  </div>
-  <div class="rodzaj2">
-    <h3>Uwagi Negatywne:</h3>
-  </div>
-  <center>
-    <div class="negatywne">
-      <table border="6px">
-        <tr>
-          <th>Punkty</th>
-          <th>Treść</th>`
-
-          <th>Nauczyciel</th>
-          <th>Data</th>
-        </tr>
- 
-
-      </table>
-    </div>
-  </center>
-  <div class="koniec">
-    <h3>Podsumowanie</h3>
-  </div>
-  <center>
-    <div class="proponuje">
-      <table border="6px">
-        <tr>
-          <th>Ocena proponowana:</th>
-          <th></th>
-        </tr>
-        <tr>
-          <th>
-            Punkty, w momencie wystawienia oceny proponowanej:
-          </th>
-          <th></th>
-        </tr>
-      </table>
-    </div>
-  </center>
-  <center>
-    <div class="zachowaniekon">
-      <table border="6px">
-        <tr>
-          <th>Ocena końcowa</th>
-          <th></th>
-        </tr>
-        <tr>
-          <th>Punkty</th>
-          <th></th>
-        </tr>
-        <tr>
-          <th>Data:</th>
-          <th></th>
-        </tr>
-      </table>
-    </div>
+    <header>
+        <div class="logo">Dziennik Elektroniczny</div>
+        <div>Witaj, <strong>Jan Kowalski</strong></div>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#">Oceny</a></li>
+            <li><a href="#">Sprawdziany i zadania</a></li>
+            <li><a href="#">Frekwencja</a></li>
+            <li><a href="#">Uwagi</a></li>
+            <li><a href="#">Plan lekcji</a></li>
+            <li><a href="#">Wiadomości</a></li>
+            <li><a href="#">Ustawienia</a></li>
+        </ul>
+    </nav>
+    <main>
+        <div class="student-panel">
+            <div class="student-photo"></div>
+            <div class="student-info">
+                <div><strong>Jan Kowalski</strong></div>
+                <div>Klasa: 2B</div>
+                <div>Numer w dzienniku: 15</div>
+            </div>
+        </div>
+        <h2>Uwagi</h2>
+        <div class="section">
+            <h3>Lista uwag</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Punkty</th>
+                        <th>Typ</th>
+                        <th>Treść uwagi</th>
+                        <th>Nauczyciel</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>08.10.2025</td>
+                        <td>+5</td>
+                        <td class="positive">Pozytywna</td>
+                        <td>Zachowanie za miesiąc IX</td>
+                        <td>mgr inż Koteu Koteuowski</td>
+                    </tr>
+                 
+                </tbody>
+            </table>
+        </div><!-- class negative oraz positive)-->
+        <div class="actions">
+            <button class="btn" onclick="exportRemarksToPDF()">Eksportuj do PDF</button>
+        </div>
+    </main>
 </body>
 
 </html>
