@@ -224,13 +224,15 @@
         // Funkcja do zamiany oceny tekstowej na liczbę
         function parseGrade(gradeStr) {
             gradeStr = gradeStr.trim();
-            if (gradeStr.endsWith('+')) {
-                return parseInt(gradeStr) + 0.5;
-            }
-            if (gradeStr.endsWith('-')) {
-                return parseInt(gradeStr) - 0.25;
-            }
-            return parseFloat(gradeStr);
+            const hasPlus = gradeStr.includes('+');
+            const hasMinus = gradeStr.includes('-');
+            
+            // Wyodrębnij liczbę, ignorując znaki + i -
+            let num = parseInt(gradeStr.replace(/[+-]/g, ''));
+            
+            if (hasPlus) return num + 0.75;  // 3+ = 3.75
+            if (hasMinus) return num - 0.25; // 3- = 2.75
+            return num;
         }
 
         function calculateSubjectAverages() {
@@ -496,7 +498,9 @@
                         <th>Nauczyciel</th>
                        
                     </tr>
-                              <tr>
+                </thead>
+                <tbody>
+                    <tr>
                         <td>01.12.2025</td>
                         <td class="grade ">-4</td>
                         <td>KA1</td>
@@ -525,9 +529,6 @@
                         <td>Odpowiedź ustna - Polska po II Wojnie Światowej</td>
                         <td>mgr inż Vienna Wiedeński</td>
                     </tr>
-                </thead>
-                <tbody>
-                    
                 </tbody>
             </table>
                 <h3>Ocena Proponowana: <b>5</b></h3>
@@ -545,6 +546,8 @@
                         <th>Komentarz</th>
                                 <th>Nauczyciel</th>
                     </tr>
+                </thead>
+                <tbody>
                     <tr>
                         <td>09.10.2025</td>
                         <td class="grade good">5</td>
@@ -601,9 +604,6 @@
                         <td>Zadanie - pole i obwód figury w CPP</td> 
                           <td>mgr Bamboleo Bamboleowski</td>
                     </tr>
-                </thead>
-                <tbody>
-                   
                 </tbody>
             </table>
                 <h3>Ocena Proponowana: <b>4</b></h3>
@@ -621,9 +621,11 @@
                         <th>Nauczyciel</th>
                       
                     </tr>
+                </thead>
+                <tbody>
                       <tr>
                         <td>8.10.2025</td>
-                        <td class="grade good">+</td>
+                        <td class="grade good">5+</td>
                         <td>A</td>
                      
                         <td>AKTYWNOŚĆ </td>
@@ -669,9 +671,6 @@
                         <td>Dodatkowa aktywność sportowa- gra w drużynie piłki nożnej</td>
                           <td>mgr Bagietta Oddowski</td>
                     </tr>
-                </thead>
-                <tbody>
-                   
                 </tbody>
             </table>
                 <h3>Ocena Proponowana: <b>5</b></h3>
