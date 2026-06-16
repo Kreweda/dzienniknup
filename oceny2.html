@@ -275,37 +275,141 @@
         }
 
         function exportSubjectsToPDF() {
-            let pdfContent = 'Oceny z przedmiotów\n\n';
-            document.querySelectorAll('.subject-grades').forEach(subjectDiv => {
-                pdfContent += subjectDiv.querySelector('h3').innerText + '\n';
-                // Średnia
-                const summaryDiv = subjectDiv.querySelector('.subject-summary');
-                if (summaryDiv) pdfContent += summaryDiv.textContent + '\n';
-                // Tabela ocen
-                const table = subjectDiv.querySelector('table');
-                Array.from(table.rows).forEach(row => {
-                    let rowText = Array.from(row.cells).map(cell => cell.innerText).join(' | ');
-                    pdfContent += rowText + '\n';
-                });
-                // Proponowana i końcowa
-                const finalDiv = subjectDiv.querySelector('.subject-final');
-                if (finalDiv) pdfContent += finalDiv.textContent + '\n';
-                pdfContent += '\n';
-            });
-
-            const script = document.createElement('script');
-            script.src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
-            script.onload = () => {
-                const {
-                    jsPDF
-                } = window.jspdf;
-                const doc = new jsPDF();
-                doc.setFont("helvetica");
-                doc.setFontSize(12);
-                doc.text(pdfContent, 10, 10);
-                doc.save("oceny-przedmioty.pdf");
+            const script1 = document.createElement('script');
+            script1.src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
+            script1.onload = () => {
+                const script2 = document.createElement('script');
+                script2.src = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
+                script2.onload = () => {
+                    // Tworzymy HTML dla PDF
+                    let htmlContent = `<div style="font-family: Arial, sans-serif; font-size: 11px; line-height: 1.3; padding: 10px;">`;
+                    
+                    htmlContent += `
+                        <div style="text-align: center; margin-bottom: 12px;">
+                            <h1 style="color: #2d3e50; margin: 5px 0; font-size: 18px;">Oceny z przedmiotów</h1>
+                            <p style="margin: 2px 0; font-size: 10px;">Kitkisana Lulusiowata | Klasa 2PLO | ${new Date().toLocaleDateString('pl-PL')}</p>
+                        </div>
+                    `;
+                    
+                    document.querySelectorAll('.subject-grades').forEach((subjectDiv) => {
+                        const title = subjectDiv.querySelector('h3').innerText;
+                        const table = subjectDiv.querySelector('table');
+                        const summaryDiv = subjectDiv.querySelector('.subject-summary');
+                        
+                        // Szukamy ocen proponowanej i końcowej
+                        let proposedGrade = '-';
+                        let finalGrade = '-';
+                        const allH3 = subjectDiv.querySelectorAll('h3');
+                        allH3.forEach(h3 => {
+                            if (h3.innerText.includes('Ocena Proponowana')) {
+                                proposedGrade = h3.innerText.split(':')[1].trim();
+                            }
+                            if (h3.innerText.includes('Ocena końcowa')) {
+                                finalGrade = h3.innerText.split(':')[1].trim();
+                            }
+                        });
+                        
+                        htmlContent += `<div style="margin: 8px 0; border-left: 3px solid #2d3e50; padding-left: 5px;">`;
+                        htmlContent += `<h2 style="margin: 2px 0; font-size: 12px; color: #2d3e50; font-weight: bold;">${title}</h2>`;
+                        
+                        htmlContent += `<table style="width: 100%; border-collapse: collapse; margin: 4px 0; font-size: 9px; background: white;">`;
+                        htmlContent += `<thead><tr style="background: #2d3e50; color: white;">`;
+                        
+                        Array.from(table.querySelectorAll('thead th')).forEach(th => {
+                            htmlContent += `<th style="padding: 3px 2px; border: 1px solid #666; font-size: 8px;">${th.innerText}</th>`;
+                        });
+                        
+                        htmlContent += `</tr></thead><tbody>`;
+                        
+                        Array.from(table.querySelectorAll('tbody tr')).forEach(row => {
+                            htmlContent += `<tr>`;
+                            Array.from(row.cells).forEach(cell => {
+                                htmlContent += `<td style="padding: 2px; border: 1px solid #999; font-size: 8px;">${cell.innerText}</td>`;
+                            });
+                            htmlContent += `</tr>`;
+                        });
+                        
+                        htmlContent += `</tbody></table>`;
+                        
+                        // Średnia
+                        if (summaryDiv) {
+                            const avg = summaryDiv.textContent.split(':')[1].trim();
+                            htmlContent += `<div style="background: #e8f4f8; padding: 3px; text-align: center; font-size: 9px; margin-top: 2px;"><strong>Średnia: ${avg}</strong></div>`;
+                        }
+                        
+                        // Oceny proponowana i końcowa
+                        htmlContent += `<div style="background: #f0f3f7; padding: 4px; margin-top: 3px; font-size: 9px; border-radius: 2px;">
+                            <div><strong>Ocena Proponowana:</strong> <strong style="color: #2d3e50; font-size: 10px;">${proposedGrade}</strong></div>
+                            <div><strong>Ocena Końcowa:</strong> <strong style="color: #2d3e50; font-size: 10px;">${finalGrade}</strong></div>
+                        </div>`;
+                        
+                        htmlContent += `</div>`;
+                    });
+                    
+                    // Miejsce na podpis wychowawcy
+                    htmlContent += `
+                        <div style="margin-top: 20px; border-top: 2px solid #2d3e50; padding-top: 15px;">
+                            <div style="display: inline-block; margin-right: 80px;">
+                                <div style="text-align: center; font-size: 9px; margin-bottom: 40px;">
+                                    <div style="border-bottom: 1px solid #000; width: 150px;"></div>
+                                    <p style="margin: 3px 0; font-weight: bold;">Podpis wychowawcy</p>
+                                </div>
+                            </div>
+                            <div style="display: inline-block;">
+                                <div style="text-align: center; font-size: 9px; margin-bottom: 40px;">
+                                    <div style="border-bottom: 1px solid #000; width: 150px;"></div>
+                                    <p style="margin: 3px 0; font-weight: bold;">Data</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    htmlContent += `</div>`;
+                    
+                    // Tworzymy element
+                    const element = document.createElement('div');
+                    element.innerHTML = htmlContent;
+                    element.style.position = 'absolute';
+                    element.style.left = '-10000px';
+                    element.style.top = '0';
+                    element.style.width = '800px';
+                    element.style.background = 'white';
+                    document.body.appendChild(element);
+                    
+                    // Renderujemy element na canvas i generujemy PDF
+                    setTimeout(() => {
+                        html2canvas(element, {
+                            scale: 2,
+                            useCORS: true,
+                            allowTaint: true,
+                            backgroundColor: '#ffffff'
+                        }).then(canvas => {
+                            const { jsPDF } = window.jspdf;
+                            const pdf = new jsPDF('p', 'mm', 'a4');
+                            const imgData = canvas.toDataURL('image/jpeg', 0.98);
+                            const imgWidth = 210;
+                            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                            let heightLeft = imgHeight;
+                            let position = 0;
+                            
+                            pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                            heightLeft -= 297;
+                            
+                            while (heightLeft > 0) {
+                                position = heightLeft - imgHeight;
+                                pdf.addPage();
+                                pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                                heightLeft -= 297;
+                            }
+                            
+                            pdf.save('oceny-przedmioty.pdf');
+                            element.remove();
+                        });
+                    }, 300);
+                };
+                document.body.appendChild(script2);
             };
-            document.body.appendChild(script);
+            document.body.appendChild(script1);
         }
 
         window.onload = function() {
