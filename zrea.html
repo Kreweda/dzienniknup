@@ -1,32 +1,68 @@
-<!DOCTYPE html>
-<html lang="pl" dir="ltr">
 
+<!doctype html>
+<html lang="pl">
 <head>
   <meta charset="utf-8">
-  <title>lekcje zrealizowane</title>
-  <link rel=stylesheet href=styl8.css>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lekcje zrealizowane</title>
+  <link rel="stylesheet" href="styl8.css">
 </head>
-
 <body>
-  <h3>Lekcje zrealizowane</h3>
-<!--  <button><a href="zrea2.html">Przejdź do Semestru II</a></button> -->
-  <table border="5px">
-    <tr>
-      <th>Data</th>
-      <th>Temat</th>
-      <th>Opis</th>
-      <th>Nauczyciel</th>
-      <th>Uwagi</th>
-      <th>przedmiot</th>
-    </tr>
- 
-    
-  </table>
-  </table>
-  </table>
-    
-  </table>
-  </table>
-</body>
+  <main class="page-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Dziennik zajęć</p>
+        <h1>Lekcje zrealizowane</h1>
+        <p class="intro">Przejrzysty wykaz przeprowadzonych zajęć.</p>
+      </div>
+      <div class="lesson-count" aria-label="Liczba wpisów">
+        <span>Wpisów</span>
+        <strong>0</strong>
+      </div>
+    </header>
 
+    <section class="content-card" aria-labelledby="table-title">
+      <div class="section-heading">
+        <div>
+          <h2 id="table-title">Historia zajęć</h2>
+          <p>Dodawaj kolejne lekcje w poniższej tabeli.</p>
+        </div>
+        <a class="button" href="zrea2.html">Semestr II <span aria-hidden="true">→</span></a>
+      </div>
+
+      <div class="table-wrap" tabindex="0">
+        <table>
+          <caption class="sr-only">Lista zrealizowanych lekcji</caption>
+          <thead>
+            <tr>
+              <th scope="col">Data</th>
+              <th scope="col">Temat</th>
+              <th scope="col">Opis</th>
+              <th scope="col">Nauczyciel</th>
+              <th scope="col">Uwagi</th>
+              <th scope="col">Przedmiot</th>
+            </tr>
+          </thead>
+          <tbody>
+          
+            <tr>
+              <td data-label="Data">15.09.2026</td>
+              <td data-label="Temat">Lekcja Organizacyjna. PZO</td>
+              <td data-label="Opis">Lekcja organizacyjna, przypomnienie zasad ocenianiania na lekcjach Teoretycznych, zapoznanie z materiałem</td>
+              <td data-label="Nauczyciel">Krewedkowski Psiepauch</td>
+              <td data-label="Uwagi">—</td>
+              <td data-label="Przedmiot"><span class="tag">Teoretyka</span></td>
+            </tr>
+            
+            <tr class="empty-row">
+              <td colspan="6">Brak dodanych lekcji.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer>© 2026 · Dziennik zajęć</footer>
+  </main>
+</body>
 </html>
