@@ -1,298 +1,44 @@
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="pl">
-
 <head>
-    <meta charset="UTF-8">
-    <title>Dziennik </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: #f4f6fa;
-        }
-        
-        header {
-            background: #2d3e50;
-            color: #fff;
-            padding: 20px 40px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .logo {
-            font-size: 1.8em;
-            font-weight: bold;
-            background: #2d3e50;
-            padding: 0 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px #0001;
-            position: relative;
-            z-index: 2;
-        }
-        
-        nav {
-            background: #34495e;
-            width: 220px;
-            min-height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            padding-top: 80px;
-            z-index: 1;
-        }
-        
-        nav ul {
-            list-style: none;
-            padding: 0;
-        }
-        
-        nav ul li {
-            margin: 20px 0;
-        }
-        
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 1.1em;
-            padding: 10px 30px;
-            display: block;
-            border-radius: 4px;
-            transition: background 0.2s;
-        }
-        
-        nav ul li a:hover {
-            background: #22313f;
-        }
-        
-        main {
-            margin-left: 240px;
-            padding: 40px;
-        }
-        
-        .student-panel {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px #0001;
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .student-photo {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: #eee;
-            margin-right: 30px;
-        }
-        
-        .student-info {
-            font-size: 1.1em;
-        }
-        
-        h2 {
-            margin-top: 0;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px #0001;
-        }
-        
-        th,
-        td {
-            padding: 12px 16px;
-            border-bottom: 1px solid #eee;
-            text-align: center;
-        }
-        
-        th {
-            background: #f0f3f7;
-        }
-        
-        tr:last-child td {
-            border-bottom: none;
-        }
-        
-        .grade {
-            font-weight: bold;
-            color: #2d3e50;
-        }
-        
-        .grade.good {
-            color: #27ae60;
-        }
-        
-        .grade.bad {
-            color: #e74c3c;
-        }
-        
-        .actions {
-            margin-top: 20px;
-        }
-        
-        .btn {
-            background: #2d3e50;
-            color: #fff;
-            border: none;
-            padding: 10px 24px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1em;
-            margin-right: 10px;
-        }
-        
-        .btn:hover {
-            background: #22313f;
-        }
-        
-        .upcoming-tests {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px #0001;
-            margin-bottom: 30px;
-        }
-        
-        .upcoming-tests h3 {
-            margin-top: 0;
-        }
-        
-        .upcoming-tests ul {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .upcoming-tests li {
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-            font-size: 1.05em;
-        }
-        
-        .upcoming-tests li:last-child {
-            border-bottom: none;
-        }
-        
-        @media (max-width: 900px) {
-            nav {
-                width: 100px;
-            }
-            main {
-                margin-left: 120px;
-                padding: 20px;
-            }
-            .student-panel {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .student-photo {
-                margin-bottom: 15px;
-                width:auto;
-                height:auto;
-            }
-            .logo {
-                font-size: 1.2em;
-                padding: 0 10px;
-            }
-        }
-    </style>
-    <script>
-        function exportTableToPDF() {
-            const table = document.querySelector('table');
-            const rows = Array.from(table.rows);
-            let pdfContent = 'Oceny - Matematyka\n\n';
-            rows.forEach(row => {
-                let rowText = Array.from(row.cells).map(cell => cell.innerText).join(' | ');
-                pdfContent += rowText + '\n';
-            });
-
-            // Tworzenie pliku PDF za pomocą biblioteki jsPDF
-            const script = document.createElement('script');
-            script.src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
-            script.onload = () => {
-                const {
-                    jsPDF
-                } = window.jspdf;
-                const doc = new jsPDF();
-                doc.setFont("helvetica");
-                doc.setFontSize(12);
-                doc.text(pdfContent, 10, 10);
-                doc.save("oceny.pdf");
-            };
-            document.body.appendChild(script);
-        }
-    </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dziennik elektroniczny</title>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>
+  <style>
+    :root { --navy:#172743; --blue:#315bd8; --soft:#eaf0ff; --ink:#18243a; --muted:#69758b; --line:#e6eaf1; --page:#f5f7fb; }
+    * { box-sizing:border-box; } body { margin:0; min-width:320px; color:var(--ink); background:var(--page); font:15px "Segoe UI",Arial,sans-serif; }
+    .topbar { height:72px; display:flex; align-items:center; justify-content:space-between; gap:20px; padding:0 34px; color:#fff; background:var(--navy); }.brand { display:flex; align-items:center; gap:11px; font-size:1.02rem; font-weight:700; }.brand-mark { display:grid; width:34px; height:34px; place-items:center; border-radius:10px; background:#4d75e8; }.account { color:#d5e0f6; font-size:.88rem; }.account strong { color:#fff; }
+    .layout { display:grid; grid-template-columns:244px minmax(0,1fr); min-height:calc(100vh - 72px); } aside { padding:24px 14px; background:#fff; border-right:1px solid var(--line); }.nav-title { margin:0 12px 11px; color:#94a0b5; font-size:.69rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; } nav a { display:block; margin:2px 0; padding:11px 12px; border-radius:9px; color:#45526b; font-size:.9rem; font-weight:600; text-decoration:none; } nav a:hover,nav a.active { color:var(--blue); background:var(--soft); }
+    main { width:min(1180px,100%); margin:0 auto; padding:42px; }.eyebrow { margin:0 0 9px; color:var(--blue); font-size:.72rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; } h1,h2,h3 { margin:0; font-family:"Segoe UI",Arial,sans-serif; letter-spacing:-.025em; } h1 { font-size:clamp(2rem,3.5vw,2.7rem); }.subtitle { margin:9px 0 27px; color:var(--muted); }
+    .student-card { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:23px; border:1px solid var(--line); border-radius:18px; background:#fff; box-shadow:0 5px 18px rgba(23,35,58,.04); }.student-main { display:flex; align-items:center; gap:16px; }.avatar { display:grid; width:54px; height:54px; place-items:center; border-radius:50%; color:var(--blue); background:var(--soft); font-weight:800; }.student-main p,.student-meta { margin:4px 0 0; color:var(--muted); font-size:.88rem; }.student-meta { text-align:right; }.student-meta strong { display:block; color:var(--ink); }
+    .dashboard { display:grid; grid-template-columns:1.2fr .8fr; gap:18px; margin-top:18px; }.card { overflow:hidden; border:1px solid var(--line); border-radius:18px; background:#fff; box-shadow:0 5px 18px rgba(23,35,58,.04); }.card-header { display:flex; align-items:center; justify-content:space-between; gap:15px; padding:20px 21px 14px; }.card-header p { margin:4px 0 0; color:var(--muted); font-size:.86rem; }.badge { padding:5px 9px; border-radius:999px; color:#1f6d42; background:#e7f7ed; font-size:.75rem; font-weight:700; white-space:nowrap; }.test { display:flex; align-items:center; gap:13px; padding:16px 20px 20px; border-top:1px solid var(--line); }.date { display:grid; width:45px; height:45px; place-items:center; border-radius:11px; color:var(--blue); background:var(--soft); font-size:.77rem; font-weight:800; text-align:center; }.test strong { display:block; font-size:.91rem; }.test span { display:block; margin-top:4px; color:var(--muted); font-size:.82rem; }
+    .info-card { padding:20px; background:linear-gradient(135deg,#315bd8,#5277e5); color:#fff; }.info-card p { margin:7px 0 0; color:#e4ebff; line-height:1.5; font-size:.89rem; }.info-icon { display:grid; width:34px; height:34px; place-items:center; margin-bottom:18px; border-radius:10px; background:rgba(255,255,255,.17); font-weight:800; }
+    .grades { margin-top:18px; overflow:hidden; border:1px solid var(--line); border-radius:18px; background:#fff; box-shadow:0 5px 18px rgba(23,35,58,.04); }.table-wrap { overflow-x:auto; } table { width:100%; min-width:760px; border-collapse:collapse; text-align:left; } th { padding:14px 20px; color:#748198; background:#f8faff; font-size:.68rem; letter-spacing:.06em; text-transform:uppercase; } td { padding:21px 20px; border-top:1px solid var(--line); color:var(--muted); font-size:.9rem; }.empty td { text-align:center; font-style:italic; }.actions { display:flex; justify-content:flex-end; margin-top:20px; }.btn { padding:12px 16px; border:0; border-radius:10px; color:#fff; background:var(--blue); box-shadow:0 7px 16px rgba(49,91,216,.22); cursor:pointer; font-weight:700; transition:.18s; }.btn:hover { background:#2449b5; transform:translateY(-1px); }.btn:disabled { cursor:wait; opacity:.7; }.footer { display:flex; justify-content:space-between; gap:20px; padding:26px 4px 0; color:#8a95a8; font-size:.77rem; }
+    @media (max-width:900px) { .layout { grid-template-columns:1fr; } aside { display:none; } main { padding:29px 20px; }.dashboard { grid-template-columns:1fr; } }.student-meta { text-align:left; }@media (max-width:580px) { .topbar { height:auto; min-height:65px; padding:15px 18px; }.account { display:none; }.student-card { align-items:flex-start; flex-direction:column; }.footer { align-items:flex-start; flex-direction:column; gap:7px; } }
+  </style>
 </head>
-
 <body>
-    <header>
-        <div class="logo">Zespół Szkół im.Kitkusława w Starym Sączu</div>
-        <div>Witaj, <strong>Kitkisana Lulusiowata</strong></div>
-    </header>
-    <nav>
-        <ul>
-            <li><a href="oceny2.html">Oceny</a></li>
-            <li><a href="obecny2.html">Frekwencja</a></li>
-            <li><a href="uwagi2.html">Uwagi</a></li>
-            <li><a href="plan3.html">Plan lekcji</a></li>
-            <li><a href="Spr.html">Sprawdziany i zadania</a></li>
-            <li><a href="zast.html">Zastępstwa</a></li>
-           <li><a href="zrea.html">Lekcje zrealizowane</a></li>
-           <li><a href="egzaminy.html">O egzaminach</a></li>
-           <li><a href="SIN.html">Szkoła i nauczyciele</a></li>
-           <li><a href="szkola.html">Strona szkoły</a></li>
-           <li><a href="pzo.html">Zasady oceniania</a></li>
-           <li><a href="PLANY LEKCYJNE.docx">Rozkład materiału</a></li>
-        </ul>
-    </nav>
-    <main>
-        <div class="student-panel">
-            <div class="student-photo"></div>
-            <div class="student-info">
-                <div><strong>Kitkisana Lulusiowata</strong></div>
-                <div>Klasa: 1MT</div>
-                <div>Wychowawca: mgr.Pero Perowski</div>
-            </div>
-        </div>
-        <div class="upcoming-tests">
-            <h3>Zbliżające się sprawdziany</h3>
-            <ul>
-                <li><strong>Teoretyka</strong> – 16-09-2026 – Temat: Diagnoza z kl.PLO</li>
-              
-            </ul>
-        </div>
-        <h2>Ostatnie oceny</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Data</th>
-                    <th>Ocena</th>
-                    <th>Symbol</th>
-                    <th>Nauczyciel</th>
-                    <th>Komentarz</th>
-                    <th>Przedmiot</th>
-                </tr>
-            </thead>
-            <tbody>
-               
-            </tbody>
-        </table>
-        <div class="actions">
-            <button class="btn" onclick="exportTableToPDF()">Eksportuj do PDF</button>
-        </div>
-        <div class="actions">
-            <h4>Administratorem Dziennika jest Psiepauch Krewedkowski</h4>
-            <h6>Wersja dziennika 2025.01</h6>
-        </div>
+  <header class="topbar"><div class="brand"><span class="brand-mark">E</span>Zespół Szkół im. Kitkusława</div><div class="account">Witaj, <strong>Kitkisana Lulusiowata</strong></div></header>
+  <div class="layout">
+    <aside><p class="nav-title">Menu główne</p><nav><a class="active" href="#start">Strona główna</a><a href="oceny2.html">Oceny</a><a href="obecny2.html">Frekwencja</a><a href="uwagi2.html">Uwagi</a><a href="plan3.html">Plan lekcji</a><a href="Spr.html">Sprawdziany i zadania</a><a href="zast.html">Zastępstwa</a><a href="zrea.html">Lekcje zrealizowane</a><a href="egzaminy.html">O egzaminach</a><a href="SIN.html">Szkoła i nauczyciele</a><a href="szkola.html">Strona szkoły</a><a href="pzo.html">Zasady oceniania</a><a href="PLANY LEKCYJNE.docx">Rozkład materiału</a></nav></aside>
+    <main id="start">
+      <p class="eyebrow">Dziennik elektroniczny</p><h1>Dzień dobry, Kitkisana</h1><p class="subtitle">Poniżej znajdziesz najważniejsze informacje z dziennika.</p>
+      <section class="student-card"><div class="student-main"><div class="avatar">KL</div><div><strong>Kitkisana Lulusiowata</strong><p>Klasa 1MT</p></div></div><div class="student-meta"><strong>Wychowawca</strong>mgr Pero Perowski</div></section>
+      <section class="dashboard"><article class="card"><div class="card-header"><div><h2>Zbliżające się sprawdziany</h2><p>Najbliższy termin</p></div><span class="badge">1 wydarzenie</span></div><div class="test"><div class="date">16<br>WRZ</div><div><strong>Teoretyka</strong><span>Diagnoza z kl. PLO</span></div></div></article><article class="card info-card"><div class="info-icon">i</div><h2>Witaj w dzienniku</h2><p>Sprawdzaj tu oceny, frekwencję, plan lekcji i aktualne informacje ze szkoły.</p></article></section>
+      <section class="grades"><div class="card-header"><div><h2>Ostatnie oceny</h2><p>Najnowsze wpisy nauczycieli</p></div></div><div class="table-wrap"><table id="grades-table"><thead><tr><th>Data</th><th>Ocena</th><th>Symbol</th><th>Nauczyciel</th><th>Komentarz</th><th>Przedmiot</th></tr></thead><tbody><tr class="empty"><td colspan="6">Brak dodanych ocen.</td></tr></tbody></table></div></section>
+      <div class="actions"><button class="btn" id="export-pdf" type="button">Eksportuj oceny do PDF</button></div>
+      <footer class="footer"><span>Administratorem dziennika jest Psiepauch Krewedkowski</span><span>Wersja dziennika 2026.01</span></footer>
     </main>
+  </div>
+  <script>
+    document.querySelector('#export-pdf').addEventListener('click', () => {
+      if (!window.jspdf?.jsPDF) { alert('Biblioteka PDF jeszcze się wczytuje. Spróbuj ponownie za chwilę.'); return; }
+      const button = document.querySelector('#export-pdf'); button.disabled = true;
+      try { const { jsPDF } = window.jspdf; const pdf = new jsPDF({unit:'mm',format:'a4'}); const table = document.querySelector('#grades-table'); const rows = [...table.tBodies[0].rows].filter(row => !row.classList.contains('empty')).map(row => [...row.cells].map(cell => cell.textContent.trim())); pdf.setFillColor(23,39,67); pdf.rect(0,0,210,32,'F'); pdf.setTextColor(255,255,255); pdf.setFontSize(17); pdf.text('Ostatnie oceny',14,15); pdf.setFontSize(9); pdf.text('Kitkisana Lulusiowata | Klasa 1MT',14,23); pdf.autoTable({head:[[...table.tHead.rows[0].cells].map(cell => cell.textContent)],body:rows.length ? rows : [['Brak dodanych ocen.','','','','','']],startY:41,margin:{left:14,right:14},theme:'grid',styles:{fontSize:8,cellPadding:3},headStyles:{fillColor:[49,91,216]}}); pdf.save('ostatnie-oceny.pdf'); } finally { button.disabled = false; }
+    });
+  </script>
 </body>
-
 </html>
