@@ -1,590 +1,100 @@
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="pl">
-
 <head>
-    <meta charset="UTF-8">
-    <title>Oceny z przedmiotów - Dziennik Elektroniczny</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: #f4f6fa;
-        }
-        
-        header {
-            background: #2d3e50;
-            color: #fff;
-            padding: 20px 40px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .logo {
-            font-size: 1.8em;
-            font-weight: bold;
-            background: #2d3e50;
-            padding: 0 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px #0001;
-            position: relative;
-            z-index: 2;
-        }
-        
-        nav {
-            background: #34495e;
-            width: 220px;
-            min-height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            padding-top: 80px;
-            z-index: 1;
-        }
-        
-        nav ul {
-            list-style: none;
-            padding: 0;
-        }
-        
-        nav ul li {
-            margin: 20px 0;
-        }
-        
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 1.1em;
-            padding: 10px 30px;
-            display: block;
-            border-radius: 4px;
-            transition: background 0.2s;
-        }
-        
-        nav ul li a:hover {
-            background: #22313f;
-        }
-        
-        main {
-            margin-left: 240px;
-            padding: 40px;
-        }
-        
-        .student-panel {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px #0001;
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .student-photo {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: #eee;
-            margin-right: 30px;
-        }
-        
-        .student-info {
-            font-size: 1.1em;
-        }
-        
-        h2 {
-            margin-top: 0;
-        }
-        
-        .subject-grades {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px #0001;
-            margin-bottom: 30px;
-        }
-        
-        .subject-grades h3 {
-            margin-top: 0;
-            margin-bottom: 10px;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px #0001;
-            margin-bottom: 20px;
-        }
-        
-        th,
-        td {
-            padding: 12px 16px;
-            border-bottom: 1px solid #eee;
-            text-align: center;
-        }
-        
-        th {
-            background: #f0f3f7;
-        }
-        
-        tr:last-child td {
-            border-bottom: none;
-        }
-        
-        .grade {
-            font-weight: bold;
-            color: #2d3e50;
-        }
-        
-        .grade.good {
-            color: #27ae60;
-        }
-        
-        .grade.bad {
-            color: #e74c3c;
-        }
-        
-        .subject-summary {
-            margin-top: 10px;
-            margin-bottom: 10px;
-            font-size: 1.08em;
-            background: #f8fafc;
-            padding: 10px;
-            border-radius: 6px;
-            box-shadow: 0 1px 4px #0001;
-            display: flex;
-            gap: 40px;
-            justify-content: flex-start;
-        }
-        
-        .subject-final {
-            margin-top: 10px;
-            margin-bottom: 10px;
-            font-size: 1.08em;
-            background: #f8fafc;
-            padding: 10px;
-            border-radius: 6px;
-            box-shadow: 0 1px 4px #0001;
-            display: flex;
-            gap: 40px;
-            justify-content: flex-start;
-        }
-        
-        .actions {
-            margin-top: 20px;
-        }
-        
-        .btn {
-            background: #2d3e50;
-            color: #fff;
-            border: none;
-            padding: 10px 24px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1em;
-            margin-right: 10px;
-        }
-        
-        .btn:hover {
-            background: #22313f;
-        }
-        
-        @media (max-width: 900px) {
-            nav {
-                width: 100px;
-            }
-            main {
-                margin-left: 120px;
-                padding: 20px;
-            }
-            .student-panel {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .student-photo {
-                margin-bottom: 15px;
-            }
-            .logo {
-                font-size: 1.2em;
-                padding: 0 10px;
-            }
-            .subject-summary,
-            .subject-final {
-                flex-direction: column;
-                gap: 10px;
-            }
-        }
-    </style>
-    <script>
-        // Funkcja do zamiany oceny tekstowej na liczbę
-        function parseGrade(gradeStr) {
-            gradeStr = gradeStr.trim();
-            const hasPlus = gradeStr.includes('+');
-            const hasMinus = gradeStr.includes('-');
-            
-            // Wyodrębnij liczbę, ignorując znaki + i -
-            let num = parseInt(gradeStr.replace(/[+-]/g, ''));
-            
-            if (hasPlus) return num + 0.75;  // 3+ = 3.75
-            if (hasMinus) return num - 0.25; // 3- = 2.75
-            return num;
-        }
-
-        function calculateSubjectAverages() {
-            document.querySelectorAll('.subject-grades').forEach(subjectDiv => {
-                const grades = [];
-                subjectDiv.querySelectorAll('tbody tr').forEach(row => {
-                    const gradeCell = row.querySelector('.grade');
-                    if (gradeCell) {
-                        const gradeText = gradeCell.textContent;
-                        const gradeValue = parseGrade(gradeText);
-                        if (!isNaN(gradeValue)) grades.push(gradeValue);
-                    }
-                });
-                let avg = grades.length ? (grades.reduce((a, b) => a + b, 0) / grades.length) : 0;
-                avg = avg ? avg.toFixed(2) : '-';
-                // Wstawienie średniej
-                let summaryDiv = subjectDiv.querySelector('.subject-summary');
-                if (!summaryDiv) {
-                    summaryDiv = document.createElement('div');
-                    summaryDiv.className = 'subject-summary';
-                    subjectDiv.insertBefore(summaryDiv, subjectDiv.querySelector('table').nextSibling);
-                }
-                summaryDiv.innerHTML = `<strong>Średnia ocen:</strong> ${avg}`;
-            });
-        }
-
-        function addFinalGradeRows() {
-            document.querySelectorAll('.subject-grades').forEach(subjectDiv => {
-                let finalDiv = subjectDiv.querySelector('.subject-final');
-                if (!finalDiv) {
-                    finalDiv = document.createElement('div');
-                    finalDiv.className = 'subject-final';
-                    finalDiv.innerHTML = `
-                        <span><strong>Ocena proponowana:</strong> <span class="proposed-grade">-</span></span>
-                        <span><strong>Ocena końcowa:</strong> <span class="final-grade">-</span></span>
-                    `;
-                    subjectDiv.appendChild(finalDiv);
-                }
-            });
-        }
-
-        function exportSubjectsToPDF() {
-            const script1 = document.createElement('script');
-            script1.src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
-            script1.onload = () => {
-                const script2 = document.createElement('script');
-                script2.src = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
-                script2.onload = () => {
-                    // Tworzymy HTML dla PDF
-                    let htmlContent = `<div style="font-family: Arial, sans-serif; font-size: 11px; line-height: 1.3; padding: 10px;">`;
-                    
-                    htmlContent += `
-                        <div style="text-align: center; margin-bottom: 12px;">
-                            <h1 style="color: #2d3e50; margin: 5px 0; font-size: 18px;">Oceny z przedmiotów</h1>
-                            <p style="margin: 2px 0; font-size: 10px;">Kitkisana Lulusiowata | Klasa 2PLO | ${new Date().toLocaleDateString('pl-PL')}</p>
-                        </div>
-                    `;
-                    
-                    document.querySelectorAll('.subject-grades').forEach((subjectDiv) => {
-                        const title = subjectDiv.querySelector('h3').innerText;
-                        const table = subjectDiv.querySelector('table');
-                        const summaryDiv = subjectDiv.querySelector('.subject-summary');
-                        
-                        // Szukamy ocen proponowanej i końcowej
-                        let proposedGrade = '-';
-                        let finalGrade = '-';
-                        const allH3 = subjectDiv.querySelectorAll('h3');
-                        allH3.forEach(h3 => {
-                            if (h3.innerText.includes('Ocena Proponowana')) {
-                                proposedGrade = h3.innerText.split(':')[1].trim();
-                            }
-                            if (h3.innerText.includes('Ocena końcowa')) {
-                                finalGrade = h3.innerText.split(':')[1].trim();
-                            }
-                        });
-                        
-                        htmlContent += `<div style="margin: 8px 0; border-left: 3px solid #2d3e50; padding-left: 5px;">`;
-                        htmlContent += `<h2 style="margin: 2px 0; font-size: 12px; color: #2d3e50; font-weight: bold;">${title}</h2>`;
-                        
-                        htmlContent += `<table style="width: 100%; border-collapse: collapse; margin: 4px 0; font-size: 9px; background: white;">`;
-                        htmlContent += `<thead><tr style="background: #2d3e50; color: white;">`;
-                        
-                        Array.from(table.querySelectorAll('thead th')).forEach(th => {
-                            htmlContent += `<th style="padding: 3px 2px; border: 1px solid #666; font-size: 8px;">${th.innerText}</th>`;
-                        });
-                        
-                        htmlContent += `</tr></thead><tbody>`;
-                        
-                        Array.from(table.querySelectorAll('tbody tr')).forEach(row => {
-                            htmlContent += `<tr>`;
-                            Array.from(row.cells).forEach(cell => {
-                                htmlContent += `<td style="padding: 2px; border: 1px solid #999; font-size: 8px;">${cell.innerText}</td>`;
-                            });
-                            htmlContent += `</tr>`;
-                        });
-                        
-                        htmlContent += `</tbody></table>`;
-                        
-                        // Średnia
-                        if (summaryDiv) {
-                            const avg = summaryDiv.textContent.split(':')[1].trim();
-                            htmlContent += `<div style="background: #e8f4f8; padding: 3px; text-align: center; font-size: 9px; margin-top: 2px;"><strong>Średnia: ${avg}</strong></div>`;
-                        }
-                        
-                        // Oceny proponowana i końcowa
-                        htmlContent += `<div style="background: #f0f3f7; padding: 4px; margin-top: 3px; font-size: 9px; border-radius: 2px;">
-                            <div><strong>Ocena Proponowana:</strong> <strong style="color: #2d3e50; font-size: 10px;">${proposedGrade}</strong></div>
-                            <div><strong>Ocena Końcowa:</strong> <strong style="color: #2d3e50; font-size: 10px;">${finalGrade}</strong></div>
-                        </div>`;
-                        
-                        htmlContent += `</div>`;
-                    });
-                    
-                    // Miejsce na podpis wychowawcy
-                    htmlContent += `
-                        <div style="margin-top: 20px; border-top: 2px solid #2d3e50; padding-top: 15px;">
-                            <div style="display: inline-block; margin-right: 80px;">
-                                <div style="text-align: center; font-size: 9px; margin-bottom: 40px;">
-                                    <div style="border-bottom: 1px solid #000; width: 150px;"></div>
-                                    <p style="margin: 3px 0; font-weight: bold;">Podpis wychowawcy</p>
-                                </div>
-                            </div>
-                            <div style="display: inline-block;">
-                                <div style="text-align: center; font-size: 9px; margin-bottom: 40px;">
-                                    <div style="border-bottom: 1px solid #000; width: 150px;"></div>
-                                    <p style="margin: 3px 0; font-weight: bold;">Data</p>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    
-                    htmlContent += `</div>`;
-                    
-                    // Tworzymy element
-                    const element = document.createElement('div');
-                    element.innerHTML = htmlContent;
-                    element.style.position = 'absolute';
-                    element.style.left = '-10000px';
-                    element.style.top = '0';
-                    element.style.width = '800px';
-                    element.style.background = 'white';
-                    document.body.appendChild(element);
-                    
-                    // Renderujemy element na canvas i generujemy PDF
-                    setTimeout(() => {
-                        html2canvas(element, {
-                            scale: 2,
-                            useCORS: true,
-                            allowTaint: true,
-                            backgroundColor: '#ffffff'
-                        }).then(canvas => {
-                            const { jsPDF } = window.jspdf;
-                            const pdf = new jsPDF('p', 'mm', 'a4');
-                            const imgData = canvas.toDataURL('image/jpeg', 0.98);
-                            const imgWidth = 210;
-                            const imgHeight = (canvas.height * imgWidth) / canvas.width;
-                            let heightLeft = imgHeight;
-                            let position = 0;
-                            
-                            pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
-                            heightLeft -= 297;
-                            
-                            while (heightLeft > 0) {
-                                position = heightLeft - imgHeight;
-                                pdf.addPage();
-                                pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
-                                heightLeft -= 297;
-                            }
-                            
-                            pdf.save('oceny-przedmioty.pdf');
-                            element.remove();
-                        });
-                    }, 300);
-                };
-                document.body.appendChild(script2);
-            };
-            document.body.appendChild(script1);
-        }
-
-        window.onload = function() {
-            calculateSubjectAverages();
-            addFinalGradeRows();
-        };
-    </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Oceny z przedmiotów</title>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap');
+    :root { --ink:#17233a; --muted:#63708a; --line:#e5eaf2; --nav:#172743; --blue:#315bd8; --blue-soft:#eaf0ff; --page:#f5f7fb; --white:#fff; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-width:320px; color:var(--ink); background:var(--page); font-family:"DM Sans",Arial,sans-serif; }
+    .topbar { height:72px; display:flex; align-items:center; justify-content:space-between; gap:24px; padding:0 34px; color:#fff; background:var(--nav); }
+    .brand { display:flex; align-items:center; gap:12px; font-family:Manrope,Arial,sans-serif; font-size:1.03rem; font-weight:800; }
+    .brand-mark { display:grid; width:34px; height:34px; place-items:center; border-radius:10px; background:#4d75e8; color:#fff; }
+    .account { color:#d8e2f6; font-size:.88rem; } .account strong { color:#fff; }
+    .layout { display:grid; grid-template-columns:244px minmax(0,1fr); min-height:calc(100vh - 72px); }
+    aside { padding:25px 14px; background:#fff; border-right:1px solid var(--line); }
+    .nav-label { margin:0 12px 10px; color:#94a0b5; font-size:.7rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+    nav a { display:flex; align-items:center; gap:12px; padding:12px; border-radius:10px; color:#44516a; font-size:.92rem; font-weight:600; text-decoration:none; }
+    nav a.active, nav a:hover { color:var(--blue); background:var(--blue-soft); } nav a span { font-size:1.1rem; }
+    main { width:min(1200px, 100%); margin:0 auto; padding:42px; }
+    .heading { display:flex; align-items:flex-end; justify-content:space-between; gap:24px; margin-bottom:28px; }
+    .eyebrow { margin:0 0 9px; color:var(--blue); font-size:.72rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+    h1,h2,h3 { font-family:Manrope,Arial,sans-serif; } h1 { margin:0; font-size:clamp(1.9rem,3vw,2.65rem); letter-spacing:-.05em; } .subtitle { margin:9px 0 0; color:var(--muted); }
+    .student { display:flex; align-items:center; gap:16px; min-width:260px; padding:14px 17px; border:1px solid var(--line); border-radius:15px; background:#fff; }
+    .avatar { display:grid; width:42px; height:42px; place-items:center; border-radius:50%; color:var(--blue); background:var(--blue-soft); font-weight:800; } .student p { margin:0; color:var(--muted); font-size:.8rem; } .student strong { display:block; margin-bottom:3px; font-size:.92rem; }
+    .grades-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+    .subject { overflow:hidden; border:1px solid var(--line); border-radius:17px; background:#fff; box-shadow:0 5px 18px rgba(23,35,58,.04); }
+    .subject-head { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:19px 20px 14px; } h2 { margin:0; font-size:1.02rem; letter-spacing:-.025em; }.average { padding:5px 9px; border-radius:999px; color:#2348aa; background:var(--blue-soft); font-size:.76rem; font-weight:700; white-space:nowrap; }
+    .table-wrap { overflow-x:auto; } table { width:100%; border-collapse:collapse; text-align:left; } th { padding:10px 13px; color:#77839a; background:#f8faff; font-size:.66rem; letter-spacing:.06em; text-transform:uppercase; white-space:nowrap; } td { padding:12px 13px; border-top:1px solid #edf0f5; color:#4b5870; font-size:.82rem; } .empty td { color:#9aa5b6; font-style:italic; text-align:center; }
+    .grade { display:inline-grid; min-width:25px; min-height:25px; place-items:center; padding:2px 6px; border-radius:7px; color:#1e7b45; background:#e5f7eb; font-weight:800; }.grade.bad { color:#b33c42; background:#ffecee; }.grade.neutral { color:#855800; background:#fff5d9; }
+    .finals { display:grid; grid-template-columns:1fr 1fr; gap:8px; padding:14px 20px 19px; } .final { padding:9px; border-radius:10px; background:#f7f9fc; }.final span { display:block; color:#7a8599; font-size:.69rem; }.final strong { display:block; margin-top:3px; font-size:.9rem; }
+    .actions { display:flex; justify-content:flex-end; margin-top:26px; }.btn { display:inline-flex; align-items:center; gap:9px; padding:12px 17px; border:0; border-radius:10px; color:#fff; background:var(--blue); box-shadow:0 7px 16px rgba(49,91,216,.22); cursor:pointer; font:700 .88rem "DM Sans",Arial,sans-serif; transition:.18s; }.btn:hover { background:#2349b6; transform:translateY(-1px); }.btn:disabled { cursor:wait; opacity:.7; }
+    .notice { position:fixed; right:22px; bottom:22px; z-index:5; max-width:330px; padding:13px 16px; border-radius:11px; color:#fff; background:#24314a; box-shadow:0 10px 28px rgba(0,0,0,.15); font-size:.88rem; opacity:0; pointer-events:none; transform:translateY(12px); transition:.2s; }.notice.show { opacity:1; transform:none; }
+    @media (max-width:900px) { .layout { grid-template-columns:1fr; } aside { display:none; } main { padding:28px 20px; }.grades-grid { grid-template-columns:1fr; } }
+    @media (max-width:580px) { .topbar { height:auto; min-height:64px; padding:14px 18px; }.account { display:none; }.heading { align-items:flex-start; flex-direction:column; }.student { width:100%; }.finals { grid-template-columns:1fr; } }
+  </style>
 </head>
-
 <body>
-    <header>
-        <div class="logo">Zespół Szkół imienia Kitkusława w Starym Sączu</div>
-        <div>Witaj, <strong>Kitkisana Lulusiowata</strong></div>
-    </header>
-    <nav>
-        <ul>
-            <li><a href="startowa.html">Strona główna</a></li>
-           
-        </ul>
-    </nav>
-    <main>
-        <div class="student-panel">
-            <div class="student-photo"></div>
-            <div class="student-info">
-                <div><strong>Kitkisana Lulusiowata</strong></div>
-                <div>Klasa: 1MT</div>
-       
-            </div>
-        </div>
-        <h2>Oceny z przedmiotów</h2>
-        <div class="subject-grades">
-            <h3>Teoretyka</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Data</th>
-                        <th>Ocena</th>
-                        <th>Rodzaj</th>
-                    
-                        <th>Komentarz</th>
-                           <th>Nauczyciel</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                </tbody>
-            </table>
-            <h3>Ocena Proponowana: <b></b></h3>
-            <h3>Ocena końcowa: <b></b></h3>
-        </div>
-        <div class="subject-grades">
-            <h3>Praktyka</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Data</th>
-                        <th>Ocena</th>
-                        <th>Rodzaj</th>
-                                <th>Komentarz</th>
-                        <th>Nauczyciel</th>
-                
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                </tbody>
-            </table>
-                <h3>Ocena Proponowana: <b></b></h3>
-            <h3>Ocena końcowa: <b></b></h3>
-        </div>
-        <div class="subject-grades">
-            <h3>Historia i Etyka</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Data</th>
-                        <th>Ocena</th>
-                        <th>Rodzaj</th>
-                         <th>Komentarz</th>
-                        <th>Nauczyciel</th>
-                       
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                </tbody>
-            </table>
-                <h3>Ocena Proponowana: <b></b></h3>
-            <h3>Ocena końcowa: <b></b></h3>
-        </div>
-        <div class="subject-grades">
-            <h3>Podstawy  Programowania</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Data</th>
-                        <th>Ocena</th>
-                        <th>Rodzaj</th>
-                
-                        <th>Komentarz</th>
-                                <th>Nauczyciel</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                </tbody>
-            </table>
-                <h3>Ocena Proponowana: <b>4</b></h3>
-            <h3>Ocena końcowa: <b>bardzodobry</b></h3>
-        </div>
-        <div class="subject-grades">
-            <h3>Wychowanie Fizyczne</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Data</th>
-                        <th>Ocena</th>
-                        <th>Rodzaj</th>
-                          <th>Komentarz</th>
-                        <th>Nauczyciel</th>
-                      
-                    </tr>
-                </thead>
-                <tbody>
-                      
-                </tbody>
-            </table>
-                <h3>Ocena Proponowana: <b></b></h3>
-            <h3>Ocena końcowa: <b></b></h3>
-        </div>
-          <div class="subject-grades">
-            <h3>Matematyka</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Data</th>
-                        <th>Ocena</th>
-                        <th>Rodzaj</th>
-                          <th>Komentarz</th>
-                        <th>Nauczyciel</th>
-                      
-                    </tr>
-                </thead>
-                <tbody>
-                      
-                </tbody>
-            </table>
-              
-                <h3>Ocena Proponowana: <b></b></h3>
-            <h3>Ocena końcowa: <b></b></h3>
-        </div>
-          <div class="subject-grades">
-            <h3>Muzyka</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Data</th>
-                        <th>Ocena</th>
-                        <th>Rodzaj</th>
-                          <th>Komentarz</th>
-                        <th>Nauczyciel</th>
-                      
-                    </tr>
-                </thead>
-                <tbody>
-                      
-                </tbody>
-            </table>
-                <h3>Ocena Proponowana: <b></b></h3>
-            <h3>Ocena końcowa: <b></b></h3>
-        </div>
-        <div class="actions">
-            <button class="btn" onclick="exportSubjectsToPDF()">Eksportuj do PDF</button>
-        </div>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">E</span>Zespół Szkół im. Kitkusława</div>
+    <div class="account">Witaj, <strong>Kitkisana Lulusiowata</strong></div>
+  </header>
+  <div class="layout">
+    <aside><p class="nav-label">Nawigacja</p><nav><a href="startowa.html"><span>⌂</span>Strona główna</a><a class="active" href="#oceny"><span>◈</span>Oceny z przedmiotów</a></nav></aside>
+    <main id="oceny">
+      <div class="heading">
+        <div><p class="eyebrow">Dziennik elektroniczny</p><h1>Oceny z przedmiotów</h1><p class="subtitle">Rok szkolny 2026/2027 · Semestr I</p></div>
+        <div class="student"><div class="avatar">KL</div><div><strong data-student="name">Kitkisana Lulusiowata</strong><p>Klasa <span data-student="class">1MT</span></p></div></div>
+      </div>
+      <section class="grades-grid" aria-label="Zestawienie ocen">
+        <article class="subject" data-subject="Teoretyka"><div class="subject-head"><h2>Teoretyka</h2><span class="average">Średnia: -</span></div><div class="table-wrap"><table><thead><tr><th>Data</th><th>Ocena</th><th>Rodzaj</th><th>Komentarz</th><th>Nauczyciel</th></tr></thead>
+            <tbody><tr><td>15.09.2026</td><td>5</td><td>A</td><td>Aktywność</td><td>Krewedkowski Psiepauch</td></tr>
+            
+            </tbody></table></div><div class="finals"><div class="final"><span>Ocena proponowana</span><strong data-proposed>-</strong></div><div class="final"><span>Ocena końcowa</span><strong data-final>-</strong></div></div></article>
+        <article class="subject" data-subject="Praktyka"><div class="subject-head"><h2>Praktyka</h2><span class="average">Średnia: -</span></div><div class="table-wrap"><table><thead><tr><th>Data</th><th>Ocena</th><th>Rodzaj</th><th>Komentarz</th><th>Nauczyciel</th></tr></thead><tbody><tr class="empty"><td colspan="5">Brak ocen.</td></tr></tbody></table></div><div class="finals"><div class="final"><span>Ocena proponowana</span><strong data-proposed>-</strong></div><div class="final"><span>Ocena końcowa</span><strong data-final>-</strong></div></div></article>
+        <article class="subject" data-subject="Historia i etyka"><div class="subject-head"><h2>Historia i etyka</h2><span class="average">Średnia: -</span></div><div class="table-wrap"><table><thead><tr><th>Data</th><th>Ocena</th><th>Rodzaj</th><th>Komentarz</th><th>Nauczyciel</th></tr></thead>
+            <tbody><tr class="empty"><td colspan="5">Brak ocen.</td></tr>
+            </tbody></table></div><div class="finals"><div class="final"><span>Ocena proponowana</span><strong data-proposed>-</strong></div><div class="final"><span>Ocena końcowa</span><strong data-final>-</strong></div></div></article>
+        <article class="subject" data-subject="Podstawy programowania"><div class="subject-head"><h2>Podstawy programowania</h2><span class="average">Średnia: -</span></div><div class="table-wrap"><table><thead><tr><th>Data</th><th>Ocena</th><th>Rodzaj</th><th>Komentarz</th><th>Nauczyciel</th></tr></thead><tbody><tr class="empty"><td colspan="5">Brak ocen.</td></tr></tbody></table></div><div class="finals"><div class="final"><span>Ocena proponowana</span><strong data-proposed>4</strong></div><div class="final"><span>Ocena końcowa</span><strong data-final>bardzo dobry</strong></div></div></article>
+        <article class="subject" data-subject="Wychowanie fizyczne"><div class="subject-head"><h2>Wychowanie fizyczne</h2><span class="average">Średnia: -</span></div><div class="table-wrap"><table><thead><tr><th>Data</th><th>Ocena</th><th>Rodzaj</th><th>Komentarz</th><th>Nauczyciel</th></tr></thead><tbody><tr class="empty"><td colspan="5">Brak ocen.</td></tr></tbody></table></div><div class="finals"><div class="final"><span>Ocena proponowana</span><strong data-proposed>-</strong></div><div class="final"><span>Ocena końcowa</span><strong data-final>-</strong></div></div></article>
+        <article class="subject" data-subject="Matematyka"><div class="subject-head"><h2>Matematyka</h2><span class="average">Średnia: -</span></div><div class="table-wrap"><table><thead><tr><th>Data</th><th>Ocena</th><th>Rodzaj</th><th>Komentarz</th><th>Nauczyciel</th></tr></thead><tbody><tr class="empty"><td colspan="5">Brak ocen.</td></tr></tbody></table></div><div class="finals"><div class="final"><span>Ocena proponowana</span><strong data-proposed>-</strong></div><div class="final"><span>Ocena końcowa</span><strong data-final>-</strong></div></div></article>
+        <article class="subject" data-subject="Muzyka"><div class="subject-head"><h2>Muzyka</h2><span class="average">Średnia: -</span></div><div class="table-wrap"><table><thead><tr><th>Data</th><th>Ocena</th><th>Rodzaj</th><th>Komentarz</th><th>Nauczyciel</th></tr></thead><tbody><tr class="empty"><td colspan="5">Brak ocen.</td></tr></tbody></table></div><div class="finals"><div class="final"><span>Ocena proponowana</span><strong data-proposed>-</strong></div><div class="final"><span>Ocena końcowa</span><strong data-final>-</strong></div></div></article>
+      </section>
+      <div class="actions"><button class="btn" id="export-pdf" type="button">⇩ Eksportuj do PDF</button></div>
     </main>
+  </div>
+  <div class="notice" role="status" aria-live="polite"></div>
+  <script>
+    const gradeValue = value => { const m = String(value).trim().match(/^([1-6])([+-])?$/); return m ? Number(m[1]) + (m[2] === '+' ? .5 : m[2] === '-' ? -.25 : 0) : null; };
+    const getText = (node, selector) => node.querySelector(selector)?.textContent.trim() || '-';
+    function updateAverages() { document.querySelectorAll('.subject').forEach(subject => { const values = [...subject.querySelectorAll('tbody .grade')].map(item => gradeValue(item.textContent)).filter(Number.isFinite); const average = values.length ? (values.reduce((sum, value) => sum + value, 0) / values.length).toFixed(2) : '-'; subject.querySelector('.average').textContent = `Średnia: ${average}`; }); }
+    function notify(message) { const notice = document.querySelector('.notice'); notice.textContent = message; notice.classList.add('show'); setTimeout(() => notice.classList.remove('show'), 4000); }
+    function exportSubjectsToPDF() {
+      if (!window.jspdf || !window.jspdf.jsPDF) { notify('Biblioteka PDF nie została jeszcze wczytana. Spróbuj ponownie za chwilę.'); return; }
+      const button = document.querySelector('#export-pdf'); button.disabled = true; button.textContent = 'Przygotowywanie PDF...';
+      try {
+        const { jsPDF } = window.jspdf; const pdf = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' }); const width = pdf.internal.pageSize.getWidth(); const height = pdf.internal.pageSize.getHeight(); const margin = 14; let y = 16;
+        const name = document.querySelector('[data-student="name"]').textContent.trim(); const studentClass = document.querySelector('[data-student="class"]').textContent.trim(); const date = new Intl.DateTimeFormat('pl-PL').format(new Date());
+        const header = () => { pdf.setFillColor(23, 39, 67); pdf.rect(0, 0, width, 31, 'F'); pdf.setTextColor(255,255,255); pdf.setFont('helvetica','bold'); pdf.setFontSize(16); pdf.text('Oceny z przedmiotów', margin, 14); pdf.setFont('helvetica','normal'); pdf.setFontSize(9); pdf.text(`${name} | Klasa ${studentClass} | Wygenerowano: ${date}`, margin, 22); pdf.setTextColor(23,35,58); y = 40; };
+        header();
+        document.querySelectorAll('.subject').forEach((subject, index) => {
+          const title = subject.dataset.subject; const table = subject.querySelector('table'); const rows = [...table.tBodies[0].rows].filter(row => !row.classList.contains('empty')).map(row => [...row.cells].map(cell => cell.textContent.trim())); const headers = [...table.tHead.rows[0].cells].map(cell => cell.textContent.trim());
+          if (y > 249) { pdf.addPage(); header(); }
+          pdf.setFillColor(234,240,255); pdf.roundedRect(margin, y - 5, width - 2 * margin, 9, 1.5, 1.5, 'F'); pdf.setTextColor(35,72,170); pdf.setFont('helvetica','bold'); pdf.setFontSize(11); pdf.text(title, margin + 4, y + 1); pdf.setTextColor(23,35,58); y += 8;
+          pdf.autoTable({ head:[headers], body:rows.length ? rows : [['Brak ocen.','','','','']], startY:y, margin:{left:margin,right:margin}, theme:'grid', styles:{font:'helvetica',fontSize:7.5,cellPadding:2.4,textColor:[56,68,91],lineColor:[223,228,238],lineWidth:.15}, headStyles:{fillColor:[23,39,67],textColor:[255,255,255],fontStyle:'bold'}, alternateRowStyles:{fillColor:[248,250,253]}, columnStyles:{0:{cellWidth:22},1:{cellWidth:16},2:{cellWidth:27},3:{cellWidth:55},4:{cellWidth:'auto'}}, didDrawPage:data => { if (data.pageNumber > 1) header(); } });
+          y = pdf.lastAutoTable.finalY + 7; if (y > height - 21) { pdf.addPage(); header(); } const proposed = getText(subject, '[data-proposed]'); const final = getText(subject, '[data-final]'); const average = subject.querySelector('.average').textContent.replace('Średnia: ',''); pdf.setFontSize(8); pdf.setFont('helvetica','bold'); pdf.text(`Średnia: ${average}`, margin + 2, y); pdf.text(`Ocena proponowana: ${proposed}`, margin + 54, y); pdf.text(`Ocena końcowa: ${final}`, margin + 118, y); y += 10;
+        });
+        const totalPages = pdf.internal.getNumberOfPages(); for (let page = 1; page <= totalPages; page++) { pdf.setPage(page); pdf.setDrawColor(224,228,236); pdf.line(margin, height - 13, width - margin, height - 13); pdf.setFontSize(7.5); pdf.setTextColor(105,117,139); pdf.text('Dziennik elektroniczny', margin, height - 8); pdf.text(`Strona ${page} z ${totalPages}`, width - margin, height - 8, {align:'right'}); }
+        pdf.save('oceny-z-przedmiotow.pdf'); notify('Gotowe - plik PDF został pobrany.');
+      } catch (error) { console.error(error); notify('Nie udało się utworzyć PDF. Sprawdź połączenie z internetem i spróbuj ponownie.'); }
+      finally { button.disabled = false; button.textContent = '⇩ Eksportuj do PDF'; }
+    }
+    document.querySelector('#export-pdf').addEventListener('click', exportSubjectsToPDF); updateAverages();
+  </script>
 </body>
-
 </html>
