@@ -5,63 +5,42 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Lekcje zrealizowane</title>
-
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap');
+    :root { --ink:#18243a; --muted:#667085; --line:#e7ebf2; --surface:#fff; --background:#f4f7fb; --accent:#3159d7; --accent-dark:#2447b3; }
+    * { box-sizing:border-box; }
+    body { min-width:320px; margin:0; color:var(--ink); background:radial-gradient(circle at 86% -10%,#dce8ff 0,transparent 31rem),var(--background); font-family:"DM Sans",Arial,sans-serif; }
+    .page-shell { width:min(1180px,calc(100% - 40px)); margin:0 auto; padding:56px 0 30px; }
+    .hero { display:flex; align-items:flex-end; justify-content:space-between; gap:24px; padding:10px 4px 34px; }
+    .eyebrow { margin:0 0 9px; color:var(--accent); font-size:.78rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+    h1,h2 { font-family:Manrope,Arial,sans-serif; } h1 { margin:0; font-size:clamp(2rem,4vw,3.25rem); letter-spacing:-.055em; line-height:1.08; }
+    .intro { margin:12px 0 0; color:var(--muted); font-size:1.05rem; }
+    .lesson-count { min-width:96px; padding:13px 18px; border:1px solid #dfe7fb; border-radius:14px; background:rgba(255,255,255,.75); text-align:center; }
+    .lesson-count span { display:block; color:var(--muted); font-size:.75rem; font-weight:600; }.lesson-count strong { display:block; margin-top:2px; color:var(--accent); font-size:1.45rem; }
+    .content-card { overflow:hidden; border:1px solid rgba(219,225,236,.95); border-radius:22px; background:var(--surface); box-shadow:0 16px 45px rgba(36,59,112,.09); }
+    .section-heading { display:flex; align-items:center; justify-content:space-between; gap:18px; padding:25px 28px; border-bottom:1px solid var(--line); }
+    h2 { margin:0; font-size:1.2rem; letter-spacing:-.03em; }.section-heading p { margin:5px 0 0; color:var(--muted); font-size:.9rem; }
+    .button { display:inline-flex; align-items:center; gap:9px; flex:0 0 auto; padding:10px 15px; border-radius:10px; color:#fff; background:var(--accent); font-size:.88rem; font-weight:700; text-decoration:none; transition:background .18s,transform .18s; }.button:hover { background:var(--accent-dark); transform:translateY(-1px); }
+    .table-wrap { overflow-x:auto; } table { width:100%; min-width:760px; border-collapse:collapse; text-align:left; } th { padding:15px 20px; color:#526079; background:#f8faff; font-size:.72rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; white-space:nowrap; } td { padding:18px 20px; border-top:1px solid var(--line); color:#33415b; font-size:.92rem; vertical-align:top; } tbody tr:hover { background:#f8faff; }.tag { display:inline-block; padding:4px 9px; border-radius:999px; color:#28499d; background:#e9efff; font-size:.78rem; font-weight:700; }
+    footer { padding:25px 4px 0; color:#7b879b; font-size:.8rem; text-align:center; }.sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+    @media (max-width:620px) { .page-shell { width:min(100% - 24px,1180px); padding-top:30px; }.hero { align-items:flex-start; flex-direction:column; padding-bottom:24px; }.lesson-count { display:flex; align-items:center; gap:9px; min-width:auto; padding:9px 13px; }.lesson-count strong { margin:0; }.section-heading { align-items:flex-start; flex-direction:column; padding:21px 20px; }.button { width:100%; justify-content:center; } table { min-width:680px; } }
+  </style>
 </head>
 <body>
   <main class="page-shell">
     <header class="hero">
-      <div>
-        <p class="eyebrow">Dziennik zajęć</p>
-        <h1>Lekcje zrealizowane</h1>
-        <p class="intro">Przejrzysty wykaz przeprowadzonych zajęć.</p>
-      </div>
-      <div class="lesson-count" aria-label="Liczba wpisów">
-        <span>Wpisów</span>
-        <strong>1</strong>
-      </div>
+      <div><p class="eyebrow">Dziennik zajęć</p><h1>Lekcje zrealizowane</h1><p class="intro">Przejrzysty wykaz przeprowadzonych zajęć.</p></div>
+      <div class="lesson-count" aria-label="Liczba wpisów"><span>Wpisów</span><strong>1</strong></div>
     </header>
-
     <section class="content-card" aria-labelledby="table-title">
-      <div class="section-heading">
-        <div>
-          <h2 id="table-title">Historia zajęć</h2>
-          <p>Dodawaj kolejne lekcje w poniższej tabeli.</p>
-        </div>
-        <a class="button" href="zrea2.html">Semestr II <span aria-hidden="true">→</span></a>
-      </div>
-
+      <div class="section-heading"><div><h2 id="table-title">Historia zajęć</h2><p>Dodawaj kolejne lekcje w poniższej tabeli.</p></div><a class="button" href="zrea2.html">Semestr II <span aria-hidden="true">→</span></a></div>
       <div class="table-wrap" tabindex="0">
-        <table>
-          <caption class="sr-only">Lista zrealizowanych lekcji</caption>
-          <thead>
-            <tr>
-              <th scope="col">Data</th>
-              <th scope="col">Temat</th>
-              <th scope="col">Opis</th>
-              <th scope="col">Nauczyciel</th>
-              <th scope="col">Uwagi</th>
-              <th scope="col">Przedmiot</th>
-            </tr>
-          </thead>
-          <tbody>
-          
-            <tr>
-              <td data-label="Data">15.09.2026</td>
-              <td data-label="Temat">Lekcja Organizacyjna. PZO</td>
-              <td data-label="Opis">Lekcja organizacyjna, przypomnienie zasad ocenianiania na lekcjach Teoretycznych, zapoznanie z materiałem</td>
-              <td data-label="Nauczyciel">Krewedkowski Psiepauch</td>
-              <td data-label="Uwagi">—</td>
-              <td data-label="Przedmiot"><span class="tag">Teoretyka</span></td>
-            </tr>
-            
-            <tr class="empty-row">
-              <td colspan="6">Brak dodanych lekcji.</td>
-            </tr>
-          </tbody>
+        <table><caption class="sr-only">Lista zrealizowanych lekcji</caption>
+          <thead><tr><th scope="col">Data</th><th scope="col">Temat</th><th scope="col">Opis</th><th scope="col">Nauczyciel</th><th scope="col">Uwagi</th><th scope="col">Przedmiot</th></tr></thead>
+          <tbody><tr><td>15.09.2026</td><td>Lekcja organizacyjna. PZO</td><td>Lekcja organizacyjna, przypomnienie zasad oceniania na lekcjach teoretycznych, zapoznanie z materiałem.</td><td>Krewedkowski Psiepauch</td><td>—</td><td><span class="tag">Teoretyka</span></td></tr></tbody>
         </table>
       </div>
     </section>
-
     <footer>© 2026 · Dziennik zajęć</footer>
   </main>
 </body>
