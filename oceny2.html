@@ -1,4 +1,5 @@
 
+
 <!doctype html>
 <html lang="pl">
 <head>
@@ -81,24 +82,36 @@
   <script>
     const gradeValue = value => { const m = String(value).trim().match(/^([1-6])([+-])?$/); return m ? Number(m[1]) + (m[2] === '+' ? .5 : m[2] === '-' ? -.25 : 0) : null; };
     const getText = (node, selector) => node.querySelector(selector)?.textContent.trim() || '-';
-    function updateAverages() { document.querySelectorAll('.subject').forEach(subject => { const values = [...subject.querySelectorAll('tbody .grade')].map(item => gradeValue(item.textContent)).filter(Number.isFinite); const average = values.length ? (values.reduce((sum, value) => sum + value, 0) / values.length).toFixed(2) : '-'; subject.querySelector('.average').textContent = `Średnia: ${average}`; }); }
+    function updateAverages() { document.querySelectorAll('.subject').forEach(subject => { const values = [...subject.querySelectorAll('tbody tr:not(.empty) td:nth-child(2)')].map(cell => gradeValue(cell.textContent)).filter(Number.isFinite); const average = values.length ? (values.reduce((sum, value) => sum + value, 0) / values.length).toFixed(2) : '-'; subject.querySelector('.average').textContent = `Średnia: ${average}`; }); }
     function notify(message) { const notice = document.querySelector('.notice'); notice.textContent = message; notice.classList.add('show'); setTimeout(() => notice.classList.remove('show'), 4000); }
-    function exportSubjectsToPDF() {
+    let pdfFontsPromise;
+    const fontUrl = file => `https://cdn.jsdelivr.net/gh/edx/edx-fonts@master/open-sans/fonts/${file}`;
+    function bufferToBase64(buffer) { const bytes = new Uint8Array(buffer); let binary = ''; for (let index = 0; index < bytes.length; index += 0x8000) binary += String.fromCharCode(...bytes.subarray(index, index + 0x8000)); return btoa(binary); }
+    async function loadPdfFonts(pdf) {
+      if (!pdfFontsPromise) pdfFontsPromise = Promise.all([fetch(fontUrl('Regular/OpenSans-Regular.ttf')), fetch(fontUrl('Bold/OpenSans-Bold.ttf'))]).then(async responses => {
+        if (responses.some(response => !response.ok)) throw new Error('Nie udało się pobrać fontu do PDF.');
+        return Promise.all(responses.map(async response => bufferToBase64(await response.arrayBuffer())));
+      });
+      const [regular, bold] = await pdfFontsPromise;
+      pdf.addFileToVFS('OpenSans-Regular.ttf', regular); pdf.addFont('OpenSans-Regular.ttf', 'OpenSans', 'normal');
+      pdf.addFileToVFS('OpenSans-Bold.ttf', bold); pdf.addFont('OpenSans-Bold.ttf', 'OpenSans', 'bold');
+    }
+    async function exportSubjectsToPDF() {
       if (!window.jspdf || !window.jspdf.jsPDF) { notify('Biblioteka PDF nie została jeszcze wczytana. Spróbuj ponownie za chwilę.'); return; }
       const button = document.querySelector('#export-pdf'); button.disabled = true; button.textContent = 'Przygotowywanie PDF...';
       try {
-        const { jsPDF } = window.jspdf; const pdf = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' }); const width = pdf.internal.pageSize.getWidth(); const height = pdf.internal.pageSize.getHeight(); const margin = 14; let y = 16;
+        const { jsPDF } = window.jspdf; const pdf = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' }); await loadPdfFonts(pdf); const width = pdf.internal.pageSize.getWidth(); const height = pdf.internal.pageSize.getHeight(); const margin = 14; let y = 16;
         const name = document.querySelector('[data-student="name"]').textContent.trim(); const studentClass = document.querySelector('[data-student="class"]').textContent.trim(); const date = new Intl.DateTimeFormat('pl-PL').format(new Date());
-        const header = () => { pdf.setFillColor(23, 39, 67); pdf.rect(0, 0, width, 31, 'F'); pdf.setTextColor(255,255,255); pdf.setFont('helvetica','bold'); pdf.setFontSize(16); pdf.text('Oceny z przedmiotów', margin, 14); pdf.setFont('helvetica','normal'); pdf.setFontSize(9); pdf.text(`${name} | Klasa ${studentClass} | Wygenerowano: ${date}`, margin, 22); pdf.setTextColor(23,35,58); y = 40; };
+        const header = () => { pdf.setFillColor(23, 39, 67); pdf.rect(0, 0, width, 31, 'F'); pdf.setTextColor(255,255,255); pdf.setFont('OpenSans','bold'); pdf.setFontSize(16); pdf.text('Oceny z przedmiotów', margin, 14); pdf.setFont('OpenSans','normal'); pdf.setFontSize(9); pdf.text(`${name} | Klasa ${studentClass} | Wygenerowano: ${date}`, margin, 22); pdf.setTextColor(23,35,58); y = 40; };
         header();
         document.querySelectorAll('.subject').forEach((subject, index) => {
           const title = subject.dataset.subject; const table = subject.querySelector('table'); const rows = [...table.tBodies[0].rows].filter(row => !row.classList.contains('empty')).map(row => [...row.cells].map(cell => cell.textContent.trim())); const headers = [...table.tHead.rows[0].cells].map(cell => cell.textContent.trim());
           if (y > 249) { pdf.addPage(); header(); }
-          pdf.setFillColor(234,240,255); pdf.roundedRect(margin, y - 5, width - 2 * margin, 9, 1.5, 1.5, 'F'); pdf.setTextColor(35,72,170); pdf.setFont('helvetica','bold'); pdf.setFontSize(11); pdf.text(title, margin + 4, y + 1); pdf.setTextColor(23,35,58); y += 8;
-          pdf.autoTable({ head:[headers], body:rows.length ? rows : [['Brak ocen.','','','','']], startY:y, margin:{left:margin,right:margin}, theme:'grid', styles:{font:'helvetica',fontSize:7.5,cellPadding:2.4,textColor:[56,68,91],lineColor:[223,228,238],lineWidth:.15}, headStyles:{fillColor:[23,39,67],textColor:[255,255,255],fontStyle:'bold'}, alternateRowStyles:{fillColor:[248,250,253]}, columnStyles:{0:{cellWidth:22},1:{cellWidth:16},2:{cellWidth:27},3:{cellWidth:55},4:{cellWidth:'auto'}}, didDrawPage:data => { if (data.pageNumber > 1) header(); } });
-          y = pdf.lastAutoTable.finalY + 7; if (y > height - 21) { pdf.addPage(); header(); } const proposed = getText(subject, '[data-proposed]'); const final = getText(subject, '[data-final]'); const average = subject.querySelector('.average').textContent.replace('Średnia: ',''); pdf.setFontSize(8); pdf.setFont('helvetica','bold'); pdf.text(`Średnia: ${average}`, margin + 2, y); pdf.text(`Ocena proponowana: ${proposed}`, margin + 54, y); pdf.text(`Ocena końcowa: ${final}`, margin + 118, y); y += 10;
+          pdf.setFillColor(234,240,255); pdf.roundedRect(margin, y - 5, width - 2 * margin, 9, 1.5, 1.5, 'F'); pdf.setTextColor(35,72,170); pdf.setFont('OpenSans','bold'); pdf.setFontSize(11); pdf.text(title, margin + 4, y + 1); pdf.setTextColor(23,35,58); y += 8;
+          pdf.autoTable({ head:[headers], body:rows.length ? rows : [['Brak ocen.','','','','']], startY:y, margin:{left:margin,right:margin}, theme:'grid', styles:{font:'OpenSans',fontSize:7.5,cellPadding:2.4,textColor:[56,68,91],lineColor:[223,228,238],lineWidth:.15}, headStyles:{fillColor:[23,39,67],textColor:[255,255,255],fontStyle:'bold'}, alternateRowStyles:{fillColor:[248,250,253]}, columnStyles:{0:{cellWidth:22},1:{cellWidth:16},2:{cellWidth:27},3:{cellWidth:55},4:{cellWidth:'auto'}}, didDrawPage:data => { if (data.pageNumber > 1) header(); } });
+          y = pdf.lastAutoTable.finalY + 7; if (y > height - 21) { pdf.addPage(); header(); } const proposed = getText(subject, '[data-proposed]'); const final = getText(subject, '[data-final]'); const average = subject.querySelector('.average').textContent.replace('Średnia: ',''); pdf.setFontSize(8); pdf.setFont('OpenSans','bold'); pdf.text(`Średnia: ${average}`, margin + 2, y); pdf.text(`Ocena proponowana: ${proposed}`, margin + 54, y); pdf.text(`Ocena końcowa: ${final}`, margin + 118, y); y += 10;
         });
-        const totalPages = pdf.internal.getNumberOfPages(); for (let page = 1; page <= totalPages; page++) { pdf.setPage(page); pdf.setDrawColor(224,228,236); pdf.line(margin, height - 13, width - margin, height - 13); pdf.setFontSize(7.5); pdf.setTextColor(105,117,139); pdf.text('Dziennik elektroniczny', margin, height - 8); pdf.text(`Strona ${page} z ${totalPages}`, width - margin, height - 8, {align:'right'}); }
+        const totalPages = pdf.internal.getNumberOfPages(); for (let page = 1; page <= totalPages; page++) { pdf.setPage(page); pdf.setDrawColor(224,228,236); pdf.line(margin, height - 13, width - margin, height - 13); pdf.setFont('OpenSans','normal'); pdf.setFontSize(7.5); pdf.setTextColor(105,117,139); pdf.text('Dziennik elektroniczny', margin, height - 8); pdf.text(`Strona ${page} z ${totalPages}`, width - margin, height - 8, {align:'right'}); }
         pdf.save('oceny-z-przedmiotow.pdf'); notify('Gotowe - plik PDF został pobrany.');
       } catch (error) { console.error(error); notify('Nie udało się utworzyć PDF. Sprawdź połączenie z internetem i spróbuj ponownie.'); }
       finally { button.disabled = false; button.textContent = '⇩ Eksportuj do PDF'; }
